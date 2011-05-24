@@ -131,8 +131,8 @@ public class BundleInterceptor
         }
 
         // do not regenerated the bundle if is newer then jar and pom
-        if ( bundle != null && bundle.getModified() >= jar.getModified()
-            && bundle.getModified() >= recipe.getModified() )
+        if ( bundle != null && bundle.getStoredLocally() >= jar.getStoredLocally()
+            && bundle.getStoredLocally() >= recipe.getStoredLocally() )
         {
             logger.debug( "OSGi bundle [{}] is up to date. Bailing out.", path );
             return;

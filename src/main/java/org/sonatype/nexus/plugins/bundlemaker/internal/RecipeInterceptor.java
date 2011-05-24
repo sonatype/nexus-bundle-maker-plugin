@@ -139,8 +139,8 @@ public class RecipeInterceptor
         }
 
         // do not regenerated the recipe if is newer then jar and pom
-        if ( recipe != null && recipe.getModified() >= jar.getModified()
-            && ( pom == null || recipe.getModified() >= pom.getModified() ) )
+        if ( recipe != null && recipe.getStoredLocally() >= jar.getStoredLocally()
+            && ( pom == null || recipe.getStoredLocally() >= pom.getStoredLocally() ) )
         {
             logger.debug( "OSGi recipe [{}] is up to date. Bailing out.", path );
             return;
