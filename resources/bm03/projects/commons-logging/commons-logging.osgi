@@ -1,0 +1,6 @@
+#Tue May 17 11:10:43 EEST 2011
+Bundle-SymbolicName=commons-logging.commons-logging
+Bundle-Version=1.1.1
+Export-Package=*
+Import-Package=*
+Bundle-Maker-Source=Proxy
