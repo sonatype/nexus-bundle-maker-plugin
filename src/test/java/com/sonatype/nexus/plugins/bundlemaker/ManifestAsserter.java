@@ -51,7 +51,8 @@ public class ManifestAsserter
             }
             else
             {
-                Assert.assertEquals( actualManifest.get( entry.getKey() ), entry.getValue(), "Manifest entry" );
+                Assert.assertEquals( actualManifest.get( entry.getKey() ), entry.getValue(),
+                    "Manifest entry " + entry.getKey() );
             }
         }
     }

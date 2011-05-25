@@ -14,6 +14,7 @@ import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerC
 import org.sonatype.nexus.plugins.bundlemaker.internal.tasks.BundleMakerRebuildTaskDescriptor;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityPropertyResource;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityResource;
+import org.sonatype.nexus.rest.model.ScheduledServicePropertyResource;
 import org.sonatype.nexus.test.utils.TaskScheduleUtil;
 
 public class BundleMakerIT
@@ -44,7 +45,11 @@ public class BundleMakerIT
     protected void runTask()
         throws Exception
     {
-        TaskScheduleUtil.runTask( BundleMakerRebuildTaskDescriptor.ID );
+        final ScheduledServicePropertyResource repo = new ScheduledServicePropertyResource();
+        repo.setKey( BundleMakerRebuildTaskDescriptor.REPO_OR_GROUP_FIELD_ID );
+        repo.setValue( getTestRepositoryId() );
+
+        TaskScheduleUtil.runTask( BundleMakerRebuildTaskDescriptor.ID, repo );
     }
 
     protected void deployFakeCentralArtifacts()
@@ -131,7 +136,7 @@ public class BundleMakerIT
     protected ManifestAsserter assertStorageBundleFor( final String groupId, final String artifact, final String version )
         throws IOException
     {
-        return assertStorageRecipeFor( groupId, artifact, version, null );
+        return assertStorageBundleFor( groupId, artifact, version, null );
     }
 
     protected ManifestAsserter assertStorageBundleFor( final String groupId, final String artifactId,
