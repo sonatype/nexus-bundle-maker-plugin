@@ -3,6 +3,7 @@ package com.sonatype.nexus.plugins.bundlemaker;
 import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.capability;
 import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.property;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.REPO_OR_GROUP_ID;
+import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,8 +11,10 @@ import java.io.IOException;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.integrationtests.AbstractNexusIntegrationTest;
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability;
+import org.sonatype.nexus.plugins.bundlemaker.internal.tasks.BundleMakerRebuildTaskDescriptor;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityPropertyResource;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityResource;
+import org.sonatype.nexus.test.utils.TaskScheduleUtil;
 
 public class BundleMakerIT
     extends AbstractNexusIntegrationTest
@@ -36,6 +39,12 @@ public class BundleMakerIT
         final CapabilityResource capability =
             capability( BundleMakerIT.class.getName(), BundleMakerCapability.ID, cprs );
         capabilities.add( capability );
+    }
+
+    protected void runTask()
+        throws Exception
+    {
+        TaskScheduleUtil.runTask( BundleMakerRebuildTaskDescriptor.ID );
     }
 
     protected void deployFakeCentralArtifacts()
@@ -97,6 +106,44 @@ public class BundleMakerIT
     protected final ManifestAsserter assertBundleManifestOf( final File bundle )
         throws IOException
     {
+        return ManifestAsserter.fromJar( bundle );
+    }
+
+    protected ManifestAsserter assertStorageRecipeFor( final String groupId, final String artifact, final String version )
+        throws IOException
+    {
+        return assertStorageRecipeFor( groupId, artifact, version, null );
+    }
+
+    protected ManifestAsserter assertStorageRecipeFor( final String groupId, final String artifactId,
+                                                       final String version, final String classifier )
+        throws IOException
+    {
+        final File recipe =
+            new File( new File( nexusWorkDir ), "storage/" + getTestRepositoryId() + "/" + groupId + "/" + artifactId
+                + "/" + version + "/" + artifactId + "-" + version + ( classifier == null ? "" : "-" + classifier )
+                + ".osgi" );
+        assertTrue( recipe.exists(), "Recipe " + recipe.getPath() + "created" );
+
+        return ManifestAsserter.fromProperties( recipe );
+    }
+
+    protected ManifestAsserter assertStorageBundleFor( final String groupId, final String artifact, final String version )
+        throws IOException
+    {
+        return assertStorageRecipeFor( groupId, artifact, version, null );
+    }
+
+    protected ManifestAsserter assertStorageBundleFor( final String groupId, final String artifactId,
+                                                       final String version, final String classifier )
+        throws IOException
+    {
+        final File bundle =
+            new File( new File( nexusWorkDir ), "storage/" + getTestRepositoryId() + "/" + groupId + "/" + artifactId
+                + "/" + version + "/" + artifactId + "-" + version + ( classifier == null ? "" : "-" + classifier )
+                + "-osgi.jar" );
+        assertTrue( bundle.exists(), "Bundle " + bundle.getPath() + "created" );
+
         return ManifestAsserter.fromJar( bundle );
     }
 
