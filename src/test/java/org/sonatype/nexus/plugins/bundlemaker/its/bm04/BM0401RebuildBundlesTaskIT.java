@@ -1,8 +1,8 @@
-package com.sonatype.nexus.plugins.bundlemaker.bm04;
+package org.sonatype.nexus.plugins.bundlemaker.its.bm04;
 
+import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-import com.sonatype.nexus.plugins.bundlemaker.BundleMakerIT;
 
 public class BM0401RebuildBundlesTaskIT
     extends BundleMakerIT

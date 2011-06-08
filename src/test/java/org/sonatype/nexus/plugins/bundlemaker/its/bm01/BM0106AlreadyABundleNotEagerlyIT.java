@@ -1,18 +1,16 @@
-package com.sonatype.nexus.plugins.bundlemaker.bm01;
+package org.sonatype.nexus.plugins.bundlemaker.its.bm01;
 
-import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.property;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormField;
+import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-import com.sonatype.nexus.plugins.bundlemaker.BundleMakerIT;
 
-public class BM0105AlreadyABundleEagerlyIT
+public class BM0106AlreadyABundleNotEagerlyIT
     extends BundleMakerIT
 {
 
@@ -20,7 +18,7 @@ public class BM0105AlreadyABundleEagerlyIT
     public void existingBundleEagerly()
         throws Exception
     {
-        createCapability( property( EagerFormField.ID, "true" ) );
+        createCapability();
 
         deployArtifacts( getTestResourceAsFile( "artifacts/jars" ) );
         final File recipe =

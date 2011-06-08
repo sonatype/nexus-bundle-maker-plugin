@@ -1,4 +1,4 @@
-package com.sonatype.nexus.plugins.bundlemaker;
+package org.sonatype.nexus.plugins.bundlemaker.its;
 
 import java.io.File;
 import java.io.FileInputStream;

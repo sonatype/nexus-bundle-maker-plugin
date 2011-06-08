@@ -1,4 +1,4 @@
-package com.sonatype.nexus.plugins.bundlemaker;
+package org.sonatype.nexus.plugins.bundlemaker.its;
 
 import org.restlet.data.MediaType;
 import org.sonatype.nexus.rest.model.RepositoryProxyResource;

@@ -1,6 +1,6 @@
-package com.sonatype.nexus.plugins.bundlemaker.bm02;
+package org.sonatype.nexus.plugins.bundlemaker.its.bm02;
 
-import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.property;
+import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
@@ -8,9 +8,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormField;
+import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerProxyIT;
 import org.testng.annotations.Test;
 
-import com.sonatype.nexus.plugins.bundlemaker.BundleMakerProxyIT;
 
 public class BM0203ProxyAlreadyABundleEagerlyIT
     extends BundleMakerProxyIT

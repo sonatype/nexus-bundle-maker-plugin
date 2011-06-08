@@ -1,8 +1,8 @@
-package com.sonatype.nexus.plugins.bundlemaker.bm03;
+package org.sonatype.nexus.plugins.bundlemaker.its.bm03;
 
+import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerProxyIT;
 import org.testng.annotations.Test;
 
-import com.sonatype.nexus.plugins.bundlemaker.BundleMakerProxyIT;
 
 public class BM0301ProxyExistentNotEagerlyIT
     extends BundleMakerProxyIT

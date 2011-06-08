@@ -1,4 +1,4 @@
-package com.sonatype.nexus.plugins.bundlemaker;
+package org.sonatype.nexus.plugins.bundlemaker.its;
 
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityRequestResource;
 import org.sonatype.restsimple.annotation.Path;

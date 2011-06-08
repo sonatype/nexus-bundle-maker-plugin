@@ -1,21 +1,18 @@
-package com.sonatype.nexus.plugins.bundlemaker.bm01;
+package org.sonatype.nexus.plugins.bundlemaker.its.bm01;
 
-import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.property;
-
-import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormField;
+import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-import com.sonatype.nexus.plugins.bundlemaker.BundleMakerIT;
 
-public class BM0101RecipeWithoutUsingMavenModelIT
+public class BM0104BundleCreationNotEagerlyIT
     extends BundleMakerIT
 {
 
     @Test
-    public void recipeWithoutUsingMavenModel()
+    public void bundleCreationNotEagerly()
         throws Exception
     {
-        createCapability( property( EagerFormField.ID, "true" ) );
+        createCapability();
 
         deployArtifacts( getTestResourceAsFile( "artifacts/jars" ) );
 

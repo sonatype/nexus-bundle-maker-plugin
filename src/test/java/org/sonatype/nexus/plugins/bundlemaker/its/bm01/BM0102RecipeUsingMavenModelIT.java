@@ -1,13 +1,13 @@
-package com.sonatype.nexus.plugins.bundlemaker.bm01;
+package org.sonatype.nexus.plugins.bundlemaker.its.bm01;
 
-import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.property;
+import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
 
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormField;
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.RemoteRepositoriesFormField;
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.UseMavenModelFormField;
+import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-import com.sonatype.nexus.plugins.bundlemaker.BundleMakerIT;
 
 public class BM0102RecipeUsingMavenModelIT
     extends BundleMakerIT

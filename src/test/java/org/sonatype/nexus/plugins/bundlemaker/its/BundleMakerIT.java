@@ -1,8 +1,8 @@
-package com.sonatype.nexus.plugins.bundlemaker;
+package org.sonatype.nexus.plugins.bundlemaker.its;
 
-import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.capability;
-import static com.sonatype.nexus.plugins.bundlemaker.CapabilitiesServiceClient.property;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.REPO_OR_GROUP_ID;
+import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.capability;
+import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
 import static org.testng.Assert.assertTrue;
 
 import java.io.File;

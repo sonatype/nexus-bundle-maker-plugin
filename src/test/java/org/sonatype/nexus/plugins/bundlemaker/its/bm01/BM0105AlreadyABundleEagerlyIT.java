@@ -1,25 +1,28 @@
-package com.sonatype.nexus.plugins.bundlemaker.bm02;
+package org.sonatype.nexus.plugins.bundlemaker.its.bm01;
 
+import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormField;
+import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-import com.sonatype.nexus.plugins.bundlemaker.BundleMakerProxyIT;
 
-public class BM0204ProxyAlreadyABundleNotEagerlyIT
-    extends BundleMakerProxyIT
+public class BM0105AlreadyABundleEagerlyIT
+    extends BundleMakerIT
 {
 
     @Test
-    public void proxyAlreadyABundleNotEagerly()
+    public void existingBundleEagerly()
         throws Exception
     {
-        createCapability();
+        createCapability( property( EagerFormField.ID, "true" ) );
 
+        deployArtifacts( getTestResourceAsFile( "artifacts/jars" ) );
         final File recipe =
             new File( new File( nexusWorkDir ), "storage/" + getTestRepositoryId()
                 + "/org/ops4j/base/ops4j-base-lang/1.2.3/ops4j-base-lang-1.2.3.osgi" );
@@ -50,4 +53,5 @@ public class BM0204ProxyAlreadyABundleNotEagerlyIT
         {
         }
     }
+
 }
