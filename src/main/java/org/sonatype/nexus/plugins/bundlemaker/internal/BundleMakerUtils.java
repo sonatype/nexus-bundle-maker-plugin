@@ -64,7 +64,8 @@ class BundleMakerUtils
         {
             return false;
         }
-        return path.endsWith( JAR_EXTENSION );
+        return path.endsWith( JAR_EXTENSION ) && !path.endsWith( "-sources" + JAR_EXTENSION )
+            && !path.endsWith( "-javadoc" + JAR_EXTENSION );
     }
 
     static boolean isAPom( final String path )
