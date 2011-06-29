@@ -98,7 +98,7 @@ class Maven2OSGiUtils
         if ( artifactId.startsWith( lastSection ) )
         {
             final String localArtifactId = artifactId.substring( lastSection.length() );
-            if ( Character.isLetterOrDigit( artifactId.charAt( 0 ) ) )
+            if ( Character.isLetterOrDigit( localArtifactId.charAt( 0 ) ) )
             {
                 return getBundleSymbolicName( groupId, localArtifactId );
             }
