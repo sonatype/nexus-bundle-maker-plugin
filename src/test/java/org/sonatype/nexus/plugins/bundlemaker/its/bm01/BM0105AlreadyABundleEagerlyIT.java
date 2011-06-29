@@ -11,7 +11,6 @@ import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormFie
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-
 public class BM0105AlreadyABundleEagerlyIT
     extends BundleMakerIT
 {
@@ -44,14 +43,7 @@ public class BM0105AlreadyABundleEagerlyIT
         {
         }
 
-        try
-        {
-            downloadArtifact( "org.ops4j.base", "ops4j-base-lang", "1.2.3", "jar", "osgi", downloadDir.getPath() );
-            fail( "Expected a FileNotFoundException" );
-        }
-        catch ( final FileNotFoundException expected )
-        {
-        }
+        downloadArtifact( "org.ops4j.base", "ops4j-base-lang", "1.2.3", "jar", "osgi", downloadDir.getPath() );
     }
 
 }

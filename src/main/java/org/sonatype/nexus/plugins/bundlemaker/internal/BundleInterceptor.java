@@ -4,6 +4,7 @@ import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.G
 import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.isAlreadyAnOSGiBundle;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.jarPathForBundle;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.recipePathForBundle;
+import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.createLink;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.retrieveFile;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.retrieveItem;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.safeRetrieveItemBypassingChecks;
@@ -32,6 +33,7 @@ import org.sonatype.nexus.proxy.ResourceStoreRequest;
 import org.sonatype.nexus.proxy.access.Action;
 import org.sonatype.nexus.proxy.item.RepositoryItemUidLock;
 import org.sonatype.nexus.proxy.item.StorageItem;
+import org.sonatype.nexus.proxy.item.StorageLinkItem;
 import org.sonatype.nexus.proxy.repository.Repository;
 
 import aQute.lib.osgi.Builder;
@@ -116,8 +118,19 @@ public class BundleInterceptor
             // do not create a bundle if jar is already an OSGi bundle
             if ( isAlreadyAnOSGiBundle( jarFile ) )
             {
-                logger.debug( "[{}] is already an OSGi bundle. Bailing out.", jarPath );
-                // TODO maybe create a link to the jar?
+                logger.debug( "[{}] is already an OSGi bundle. Creating an link.", jarPath );
+                if ( bundle == null || !( bundle instanceof StorageLinkItem ) )
+                {
+                    try
+                    {
+                        createLink( repository, jar, path );
+                    }
+                    catch ( final Exception e )
+                    {
+                        logger.warn(
+                            String.format( "OSGi bundle link [%s] not created due to [%s]", path, e.getMessage() ), e );
+                    }
+                }
                 return;
             }
 

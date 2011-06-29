@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-
 public class BM0106AlreadyABundleNotEagerlyIT
     extends BundleMakerIT
 {
@@ -42,14 +41,7 @@ public class BM0106AlreadyABundleNotEagerlyIT
         {
         }
 
-        try
-        {
-            downloadArtifact( "org.ops4j.base", "ops4j-base-lang", "1.2.3", "jar", "osgi", downloadDir.getPath() );
-            fail( "Expected a FileNotFoundException" );
-        }
-        catch ( final FileNotFoundException expected )
-        {
-        }
+        downloadArtifact( "org.ops4j.base", "ops4j-base-lang", "1.2.3", "jar", "osgi", downloadDir.getPath() );
     }
 
 }
