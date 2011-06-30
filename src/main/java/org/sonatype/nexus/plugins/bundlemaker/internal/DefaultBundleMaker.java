@@ -4,7 +4,9 @@ import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.b
 import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.isABundle;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.isAJar;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.isAPom;
+import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.isARecipe;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.BundleMakerUtils.isAlreadyAnOSGiBundle;
+import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.deleteItem;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.getRelativePath;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.localStorageOfRepositoryAsFile;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.NexusUtils.retrieveFile;
@@ -172,7 +174,8 @@ public class DefaultBundleMaker
     }
 
     @Override
-    public void scanAndRebuild( final String repositoryId, final String resourceStorePath )
+    public void scanAndRebuild( final String repositoryId, final String resourceStorePath,
+                                final boolean forceRegeneration )
     {
         logger.debug( "Rebuilding OSGi bundles for repository [{}], path [{}]", repositoryId, resourceStorePath );
 
@@ -193,6 +196,33 @@ public class DefaultBundleMaker
             if ( resourceStorePath != null )
             {
                 scanPath = new File( scanPath, resourceStorePath );
+            }
+
+            if ( forceRegeneration )
+            {
+                new SerialScanner().scan( scanPath, new ListenerSupport()
+                {
+
+                    @Override
+                    public void onFile( final File file )
+                    {
+                        if ( isARecipe( file.getPath() ) )
+                        {
+                            final String path = getRelativePath( localStorage, file );
+                            try
+                            {
+                                deleteItem( repository, path );
+                            }
+                            catch ( final Exception e )
+                            {
+                                logger.warn( String.format(
+                                    "Recipe [%s] could not be deleted in order to force its regeneration due to [%s]",
+                                    path, e.getMessage() ), e );
+                            }
+                        }
+                    }
+
+                } );
             }
 
             new SerialScanner().scan( scanPath, new ListenerSupport()
@@ -229,11 +259,11 @@ public class DefaultBundleMaker
     }
 
     @Override
-    public void scanAndRebuild( final String resourceStorePath )
+    public void scanAndRebuild( final String resourceStorePath, final boolean forceRegeneration )
     {
         for ( final Repository repository : repositories.getRepositories() )
         {
-            scanAndRebuild( repository.getId(), resourceStorePath );
+            scanAndRebuild( repository.getId(), resourceStorePath, forceRegeneration );
         }
     }
 

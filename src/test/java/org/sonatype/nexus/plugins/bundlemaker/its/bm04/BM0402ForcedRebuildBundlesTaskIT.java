@@ -1,9 +1,13 @@
 package org.sonatype.nexus.plugins.bundlemaker.its.bm04;
 
+import static org.testng.Assert.assertTrue;
+
+import java.io.File;
+
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
 
-public class BM0401RebuildBundlesTaskIT
+public class BM0402ForcedRebuildBundlesTaskIT
     extends BundleMakerIT
 {
 
@@ -17,6 +21,17 @@ public class BM0401RebuildBundlesTaskIT
         deployArtifacts( getTestResourceAsFile( "artifacts/jars" ) );
 
         runTask( false );
+
+        File recipe = storageRecipeFor( "commons-logging", "commons-logging", "1.1.1" );
+        assertTrue( recipe.exists(), "Recipe " + recipe.getPath() + "created" );
+        final long lastModified = recipe.lastModified();
+
+        runTask( true );
+
+        recipe = storageRecipeFor( "commons-logging", "commons-logging", "1.1.1" );
+        assertTrue( recipe.exists(), "Recipe " + recipe.getPath() + "created" );
+
+        assertTrue( recipe.lastModified() > lastModified, "Recipe was recreated" );
 
         assertStorageRecipeFor( "commons-logging", "commons-logging", "1.1.1" ).matches(
             getTestResourceAsFile( "manifests/bm0401/commons-logging-1.1.1.osgi.properties" ) );

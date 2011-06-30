@@ -33,6 +33,11 @@ public class BundleMakerRebuildTask
         return BundleMakerRebuildTaskDescriptor.RESOURCE_STORE_PATH_FIELD_ID;
     }
 
+    protected boolean getForceRegeneration()
+    {
+        return Boolean.valueOf( getParameter( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_OR_GROUP_FIELD_ID ) );
+    }
+
     @Override
     protected String getAction()
     {
@@ -60,11 +65,11 @@ public class BundleMakerRebuildTask
         final String repositoryId = getRepositoryId();
         if ( repositoryId != null )
         {
-            bundleMaker.scanAndRebuild( repositoryId, getResourceStorePath() );
+            bundleMaker.scanAndRebuild( repositoryId, getResourceStorePath(), getForceRegeneration() );
         }
         else
         {
-            bundleMaker.scanAndRebuild( getResourceStorePath() );
+            bundleMaker.scanAndRebuild( getResourceStorePath(), getForceRegeneration() );
         }
 
         return null;

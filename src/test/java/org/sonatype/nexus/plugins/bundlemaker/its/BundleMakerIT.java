@@ -7,6 +7,8 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.integrationtests.AbstractNexusIntegrationTest;
@@ -42,14 +44,29 @@ public class BundleMakerIT
         capabilities.add( capability );
     }
 
-    protected void runTask()
+    protected void runTask( final boolean forceRegeneration )
         throws Exception
     {
-        final ScheduledServicePropertyResource repo = new ScheduledServicePropertyResource();
-        repo.setKey( BundleMakerRebuildTaskDescriptor.REPO_OR_GROUP_FIELD_ID );
-        repo.setValue( getTestRepositoryId() );
+        final List<ScheduledServicePropertyResource> properties = new ArrayList<ScheduledServicePropertyResource>();
 
-        TaskScheduleUtil.runTask( BundleMakerRebuildTaskDescriptor.ID, repo );
+        final ScheduledServicePropertyResource repo =
+            TaskScheduleUtil.newProperty( BundleMakerRebuildTaskDescriptor.REPO_OR_GROUP_FIELD_ID,
+                getTestRepositoryId() );
+
+        properties.add( repo );
+
+        if ( forceRegeneration )
+        {
+            final ScheduledServicePropertyResource forced =
+                TaskScheduleUtil.newProperty( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_OR_GROUP_FIELD_ID,
+                    "true" );
+
+            properties.add( forced );
+        }
+
+        TaskScheduleUtil.runTask( BundleMakerRebuildTaskDescriptor.ID + System.currentTimeMillis(),
+            BundleMakerRebuildTaskDescriptor.ID,
+            properties.toArray( new ScheduledServicePropertyResource[properties.size()] ) );
     }
 
     protected void deployFakeCentralArtifacts()
@@ -124,10 +141,7 @@ public class BundleMakerIT
                                                        final String version, final String classifier )
         throws IOException
     {
-        final File recipe =
-            new File( new File( nexusWorkDir ), "storage/" + getTestRepositoryId() + "/" + groupId + "/" + artifactId
-                + "/" + version + "/" + artifactId + "-" + version + ( classifier == null ? "" : "-" + classifier )
-                + ".osgi" );
+        final File recipe = storageRecipeFor( groupId, artifactId, version, classifier );
         assertTrue( recipe.exists(), "Recipe " + recipe.getPath() + "created" );
 
         return ManifestAsserter.fromProperties( recipe );
@@ -150,6 +164,21 @@ public class BundleMakerIT
         assertTrue( bundle.exists(), "Bundle " + bundle.getPath() + "created" );
 
         return ManifestAsserter.fromJar( bundle );
+    }
+
+    protected File storageRecipeFor( final String groupId, final String artifactId, final String version )
+    {
+        return storageRecipeFor( groupId, artifactId, version, null );
+    }
+
+    protected File storageRecipeFor( final String groupId, final String artifactId, final String version,
+                                     final String classifier )
+    {
+        final File recipe =
+            new File( new File( nexusWorkDir ), "storage/" + getTestRepositoryId() + "/" + groupId + "/" + artifactId
+                + "/" + version + "/" + artifactId + "-" + version + ( classifier == null ? "" : "-" + classifier )
+                + ".osgi" );
+        return recipe;
     }
 
 }

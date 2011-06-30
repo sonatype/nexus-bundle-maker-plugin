@@ -105,4 +105,13 @@ class BundleMakerUtils
         }
     }
 
+    static boolean isARecipe( final String path )
+    {
+        if ( path == null )
+        {
+            return false;
+        }
+        return path.endsWith( OSGi_EXTENSION );
+    }
+
 }

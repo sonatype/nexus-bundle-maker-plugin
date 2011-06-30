@@ -149,6 +149,13 @@ class NexusUtils
             repository.getId() ) );
     }
 
+    static void deleteItem( final Repository repository, final String path )
+        throws Exception
+    {
+        final ResourceStoreRequest request = new ResourceStoreRequest( path );
+        repository.deleteItem( request );
+    }
+
     static String getRelativePath( final File fromFile, final File toFile )
     {
         final String[] fromSegments = getReversePathSegments( fromFile );

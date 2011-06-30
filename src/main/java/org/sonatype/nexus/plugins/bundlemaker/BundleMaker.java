@@ -17,8 +17,8 @@ public interface BundleMaker
 
     void createOSGiVersionOfJarsWithPom( final StorageItem pom );
 
-    void scanAndRebuild( String repositoryId, String resourceStorePath );
+    void scanAndRebuild( String repositoryId, String resourceStorePath, boolean forceRegeneration );
 
-    void scanAndRebuild( String resourceStorePath );
+    void scanAndRebuild( String resourceStorePath, boolean forceRegeneration );
 
 }
