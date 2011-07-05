@@ -27,7 +27,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <nexus.version>1.9.2-INSIGHT-SNAPSHOT</nexus.version>
+    <nexus.version>1.9.2</nexus.version>
+    <sisu.assembler.tags>nexus,nexus-plugins</sisu.assembler.tags>
   </properties>
 
   <dependencies>
@@ -122,7 +123,7 @@
     <dependency>
       <groupId>org.sonatype.restsimple</groupId>
       <artifactId>restsimple-client</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>0.4</version>
       <scope>test</scope>
     </dependency>
 
@@ -134,7 +135,7 @@
       <dependency>
         <groupId>org.sonatype.nexus</groupId>
         <artifactId>nexus-runtime-platform</artifactId>
-        <version>2-INSIGHT-SNAPSHOT</version>
+        <version>${nexus.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
