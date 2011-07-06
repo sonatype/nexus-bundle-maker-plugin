@@ -3,21 +3,28 @@ package org.sonatype.nexus.plugins.bundlemaker.its.bm03;
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerProxyIT;
 import org.testng.annotations.Test;
 
-
 public class BM0301ProxyExistentNotEagerlyIT
     extends BundleMakerProxyIT
 {
 
+    public BM0301ProxyExistentNotEagerlyIT()
+    {
+        super( "bm03" );
+    }
+
+    /**
+     * Recipe bundle are not created when those already exists, bundle maker capability not eager.
+     */
     @Test
-    public void proxyExistentNotEagerly()
+    public void test()
         throws Exception
     {
         createCapability();
 
-        deployArtifact( getFakeCentralRepositoryId(),
+        deployArtifact( getProxiedRepositoryId(),
             getTestResourceAsFile( "projects/commons-logging/commons-logging.osgi" ),
             "commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.osgi" );
-        deployArtifact( getFakeCentralRepositoryId(),
+        deployArtifact( getProxiedRepositoryId(),
             getTestResourceAsFile( "projects/commons-logging/commons-logging-osgi.jar" ),
             "commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-osgi.jar" );
 

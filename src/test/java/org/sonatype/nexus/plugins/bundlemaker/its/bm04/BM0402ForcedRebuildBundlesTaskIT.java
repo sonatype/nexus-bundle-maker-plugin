@@ -11,8 +11,17 @@ public class BM0402ForcedRebuildBundlesTaskIT
     extends BundleMakerIT
 {
 
+    public BM0402ForcedRebuildBundlesTaskIT()
+    {
+        super( "bm04" );
+    }
+
+    /**
+     * Deploy jars before bundle maker capability is enabled, and check recipe/bundle after rebuild task. Verify that a
+     * forced rebuild task recreates them.
+     */
     @Test
-    public void rebuildBundlesTask()
+    public void test()
         throws Exception
     {
         // capability is not eagerly so bundle is not created when jars are deployed

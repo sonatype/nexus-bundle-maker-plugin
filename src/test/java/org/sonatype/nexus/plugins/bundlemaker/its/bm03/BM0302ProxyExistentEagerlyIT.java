@@ -8,16 +8,24 @@ public class BM0302ProxyExistentEagerlyIT
     extends BundleMakerProxyIT
 {
 
+    public BM0302ProxyExistentEagerlyIT()
+    {
+        super( "bm03" );
+    }
+
+    /**
+     * Recipe bundle are not created when those already exists, bundle maker capability not eager.
+     */
     @Test
-    public void proxyExistentEagerly()
+    public void test()
         throws Exception
     {
         createCapability( property( EagerFormField.ID, "true" ) );
 
-        deployArtifact( getFakeCentralRepositoryId(),
+        deployArtifact( getProxiedRepositoryId(),
             getTestResourceAsFile( "projects/commons-logging/commons-logging.osgi" ),
             "commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.osgi" );
-        deployArtifact( getFakeCentralRepositoryId(),
+        deployArtifact( getProxiedRepositoryId(),
             getTestResourceAsFile( "projects/commons-logging/commons-logging-osgi.jar" ),
             "commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-osgi.jar" );
 

@@ -8,9 +8,9 @@ public class BundleMakerProxyIT
     extends BundleMakerIT
 {
 
-    public BundleMakerProxyIT()
+    public BundleMakerProxyIT( final String repoId )
     {
-        super( REPO_RELEASE_PROXY_REPO1 );
+        super( repoId );
     }
 
     @Override
@@ -20,7 +20,13 @@ public class BundleMakerProxyIT
         final RepositoryMessageUtil repoUtil =
             new RepositoryMessageUtil( this, getXMLXStream(), MediaType.APPLICATION_XML );
         final RepositoryProxyResource repo = (RepositoryProxyResource) repoUtil.getRepository( getTestRepositoryId() );
-        repo.getRemoteStorage().setRemoteStorageUrl( getNexusTestRepoUrl( getFakeCentralRepositoryId() ) );
+        repo.getRemoteStorage().setRemoteStorageUrl( getNexusTestRepoUrl( getProxiedRepositoryId() ) );
         repoUtil.updateRepo( repo );
     }
+
+    protected String getProxiedRepositoryId()
+    {
+        return getTestRepositoryId() + "-proxied";
+    }
+
 }

@@ -8,8 +8,16 @@ public class BM0101RecipeWithoutUsingMavenModelIT
     extends BundleMakerIT
 {
 
+    public BM0101RecipeWithoutUsingMavenModelIT()
+    {
+        super( "bm01" );
+    }
+
+    /**
+     * Match recipe when maven model is not used.
+     */
     @Test
-    public void recipeWithoutUsingMavenModel()
+    public void test()
         throws Exception
     {
         createCapability( property( EagerFormField.ID, "true" ) );

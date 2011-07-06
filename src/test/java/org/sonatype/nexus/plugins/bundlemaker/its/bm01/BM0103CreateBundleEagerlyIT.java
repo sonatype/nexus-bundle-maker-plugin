@@ -8,8 +8,16 @@ public class BM0103CreateBundleEagerlyIT
     extends BundleMakerIT
 {
 
+    public BM0103CreateBundleEagerlyIT()
+    {
+        super( "bm01" );
+    }
+
+    /**
+     * When a jar is deployed and bundle maker capability is eager, recipe/bundle is created on deploy.
+     */
     @Test
-    public void createBundleEagerly()
+    public void test()
         throws Exception
     {
         createCapability( property( EagerFormField.ID, "true" ) );

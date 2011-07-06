@@ -14,8 +14,17 @@ public class BM0105AlreadyABundleEagerlyIT
     extends BundleMakerIT
 {
 
+    public BM0105AlreadyABundleEagerlyIT()
+    {
+        super( "bm01" );
+    }
+
+    /**
+     * When an OSGi bundle is deployed and bundle maker capability is eager a bundle link is created on deploy. Recipe
+     * should not be created.
+     */
     @Test
-    public void existingBundleEagerly()
+    public void test()
         throws Exception
     {
         createCapability( property( EagerFormField.ID, "true" ) );

@@ -8,8 +8,16 @@ public class BM0202ProxyEagerlyIT
     extends BundleMakerProxyIT
 {
 
+    public BM0202ProxyEagerlyIT()
+    {
+        super( "bm02" );
+    }
+
+    /**
+     * Download a recipe/bundle form a proxy repository, bundle maker capability eager.
+     */
     @Test
-    public void proxyNotEagerly()
+    public void test()
         throws Exception
     {
         createCapability( property( EagerFormField.ID, "true" ) );

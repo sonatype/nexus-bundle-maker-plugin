@@ -13,8 +13,17 @@ public class BM0106AlreadyABundleNotEagerlyIT
     extends BundleMakerIT
 {
 
+    public BM0106AlreadyABundleNotEagerlyIT()
+    {
+        super( "bm01" );
+    }
+
+    /**
+     * When an OSGI bundle is deployed and bundle maker capability is not eager a bundle link is created only on
+     * download. Recipe should not be created.
+     */
     @Test
-    public void existingBundleEagerly()
+    public void test()
         throws Exception
     {
         createCapability();

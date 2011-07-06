@@ -60,8 +60,8 @@ under the License.
   </repositories>
   <distributionManagement>
     <repository>
-      <id>${fake-central-id}</id>
-      <url>${nexus-base-url}content/repositories/${fake-central-id}</url>
+      <id>bm01-central</id>
+      <url>${nexus-base-url}content/repositories/bm01-central</url>
     </repository>
   </distributionManagement>
   <mailingLists>

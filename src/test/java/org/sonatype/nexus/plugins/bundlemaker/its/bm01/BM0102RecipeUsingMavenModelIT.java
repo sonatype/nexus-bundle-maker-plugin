@@ -10,8 +10,16 @@ public class BM0102RecipeUsingMavenModelIT
     extends BundleMakerIT
 {
 
+    public BM0102RecipeUsingMavenModelIT()
+    {
+        super( "bm01" );
+    }
+
+    /**
+     * Match recipe when maven model is used.
+     */
     @Test
-    public void recipeUsingMavenModel()
+    public void test()
         throws Exception
     {
         deployFakeCentralArtifacts();

@@ -492,8 +492,8 @@
 
   <distributionManagement>
     <repository>
-      <id>${fake-central-id}</id>
-      <url>${nexus-base-url}content/repositories/${fake-central-id}</url>
+      <id>bm02-proxied</id>
+      <url>${nexus-base-url}content/repositories/bm02-proxied</url>
     </repository>
     <site>
       <id>apache.website</id>

@@ -35,7 +35,7 @@ public class BundleMakerIT
         throws Exception
     {
         final CapabilityPropertyResource[] cprs = new CapabilityPropertyResource[properties.length + 1];
-        cprs[0] = property( REPO_OR_GROUP_ID, testRepositoryId );
+        cprs[0] = property( REPO_OR_GROUP_ID, getTestRepositoryId() );
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
             capability( BundleMakerIT.class.getName(), BundleMakerCapability.ID, cprs );
@@ -56,8 +56,7 @@ public class BundleMakerIT
         if ( forceRegeneration )
         {
             final ScheduledServicePropertyResource forced =
-                TaskScheduleUtil.newProperty( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_FIELD_ID,
-                    "true" );
+                TaskScheduleUtil.newProperty( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_FIELD_ID, "true" );
 
             properties.add( forced );
         }
@@ -84,7 +83,7 @@ public class BundleMakerIT
 
     protected String getFakeCentralRepositoryId()
     {
-        return REPO_TEST_HARNESS_REPO2;
+        return getTestRepositoryId() + "-central";
     }
 
     protected ManifestAsserter assertRecipeFor( final String groupId, final String artifact, final String version )

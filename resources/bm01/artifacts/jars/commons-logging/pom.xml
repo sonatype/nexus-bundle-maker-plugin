@@ -492,8 +492,8 @@
 
   <distributionManagement>
     <repository>
-      <id>nexus-test-harness-repo</id>
-      <url>${nexus-base-url}content/repositories/nexus-test-harness-repo</url>
+      <id>bm01</id>
+      <url>${nexus-base-url}content/repositories/bm01</url>
     </repository>
     <site>
       <id>apache.website</id>

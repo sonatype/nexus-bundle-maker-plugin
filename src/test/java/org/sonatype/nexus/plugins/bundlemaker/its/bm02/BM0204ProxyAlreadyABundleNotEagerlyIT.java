@@ -9,13 +9,20 @@ import java.io.FileNotFoundException;
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerProxyIT;
 import org.testng.annotations.Test;
 
-
 public class BM0204ProxyAlreadyABundleNotEagerlyIT
     extends BundleMakerProxyIT
 {
 
+    public BM0204ProxyAlreadyABundleNotEagerlyIT()
+    {
+        super( "bm02" );
+    }
+
+    /**
+     * For an OSGi bundle recipe is not created and there is a link to original bundle, bundle maker capability eager.
+     */
     @Test
-    public void proxyAlreadyABundleNotEagerly()
+    public void test()
         throws Exception
     {
         createCapability();
@@ -41,13 +48,7 @@ public class BM0204ProxyAlreadyABundleNotEagerlyIT
         {
         }
 
-        try
-        {
-            downloadArtifact( "org.ops4j.base", "ops4j-base-lang", "1.2.3", "jar", "osgi", downloadDir.getPath() );
-            fail( "Expected a FileNotFoundException" );
-        }
-        catch ( final FileNotFoundException expected )
-        {
-        }
+        // there should be a link to original
+        downloadArtifact( "org.ops4j.base", "ops4j-base-lang", "1.2.3", "jar", "osgi", downloadDir.getPath() );
     }
 }

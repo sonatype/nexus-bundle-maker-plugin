@@ -3,13 +3,20 @@ package org.sonatype.nexus.plugins.bundlemaker.its.bm02;
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerProxyIT;
 import org.testng.annotations.Test;
 
-
 public class BM0201ProxyNotEagerlyIT
     extends BundleMakerProxyIT
 {
 
+    public BM0201ProxyNotEagerlyIT()
+    {
+        super( "bm02" );
+    }
+
+    /**
+     * Download a recipe/bundle form a proxy repository, bundle maker capability not eager.
+     */
     @Test
-    public void proxyNotEagerly()
+    public void test()
         throws Exception
     {
         createCapability();
