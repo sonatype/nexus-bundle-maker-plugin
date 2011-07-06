@@ -1,11 +1,8 @@
 package org.sonatype.nexus.plugins.bundlemaker.its.bm01;
 
-import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
-
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormField;
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerIT;
 import org.testng.annotations.Test;
-
 
 public class BM0103CreateBundleEagerlyIT
     extends BundleMakerIT

@@ -1,8 +1,6 @@
 package org.sonatype.nexus.plugins.bundlemaker.its;
 
 import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.REPO_OR_GROUP_ID;
-import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.capability;
-import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
 import static org.testng.Assert.assertTrue;
 
 import java.io.File;
@@ -17,6 +15,7 @@ import org.sonatype.nexus.plugins.bundlemaker.internal.tasks.BundleMakerRebuildT
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityPropertyResource;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityResource;
 import org.sonatype.nexus.rest.model.ScheduledServicePropertyResource;
+import org.sonatype.nexus.test.utils.CapabilitiesMessageUtil;
 import org.sonatype.nexus.test.utils.TaskScheduleUtil;
 
 public class BundleMakerIT
@@ -35,13 +34,12 @@ public class BundleMakerIT
     protected void createCapability( final CapabilityPropertyResource... properties )
         throws Exception
     {
-        final CapabilitiesServiceClient capabilities = new CapabilitiesServiceClient( nexusBaseUrl );
         final CapabilityPropertyResource[] cprs = new CapabilityPropertyResource[properties.length + 1];
         cprs[0] = property( REPO_OR_GROUP_ID, testRepositoryId );
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
             capability( BundleMakerIT.class.getName(), BundleMakerCapability.ID, cprs );
-        capabilities.add( capability );
+        CapabilitiesMessageUtil.create( capability );
     }
 
     protected void runTask( final boolean forceRegeneration )
@@ -58,7 +56,7 @@ public class BundleMakerIT
         if ( forceRegeneration )
         {
             final ScheduledServicePropertyResource forced =
-                TaskScheduleUtil.newProperty( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_OR_GROUP_FIELD_ID,
+                TaskScheduleUtil.newProperty( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_FIELD_ID,
                     "true" );
 
             properties.add( forced );
@@ -179,6 +177,32 @@ public class BundleMakerIT
                 + "/" + version + "/" + artifactId + "-" + version + ( classifier == null ? "" : "-" + classifier )
                 + ".osgi" );
         return recipe;
+    }
+
+    public static CapabilityResource capability( final String name, final String type,
+                                                 final CapabilityPropertyResource... properties )
+    {
+        final CapabilityResource cr = new CapabilityResource();
+
+        cr.setName( name );
+        cr.setTypeId( type );
+
+        for ( final CapabilityPropertyResource cpr : properties )
+        {
+            cr.addProperty( cpr );
+        }
+
+        return cr;
+    }
+
+    public static CapabilityPropertyResource property( final String key, final String value )
+    {
+        final CapabilityPropertyResource cpr = new CapabilityPropertyResource();
+
+        cpr.setKey( key );
+        cpr.setValue( value );
+
+        return cpr;
     }
 
 }

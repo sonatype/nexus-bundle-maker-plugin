@@ -24,7 +24,7 @@ public class BundleMakerRebuildTaskDescriptor
 
     public static final String RESOURCE_STORE_PATH_FIELD_ID = "resourceStorePath";
 
-    public static final String FORCED_REGENERATION_OR_GROUP_FIELD_ID = "forceRegeneration";
+    public static final String FORCED_REGENERATION_FIELD_ID = "forceRegeneration";
 
     private final RepoOrGroupComboFormField repoField = new RepoOrGroupComboFormField( REPO_OR_GROUP_FIELD_ID,
         FormField.MANDATORY );
@@ -34,7 +34,7 @@ public class BundleMakerRebuildTaskDescriptor
         "Enter a repository path to run the task in recursively (ie. \"/\" for root or \"/org/apache\")",
         FormField.OPTIONAL );
 
-    private final FormField forceRegeneration = new CheckboxFormField( FORCED_REGENERATION_OR_GROUP_FIELD_ID,
+    private final FormField forceRegeneration = new CheckboxFormField( FORCED_REGENERATION_FIELD_ID,
         "Force regeneration", "Check this if you wanna force regeneration of bundles even if is up to date",
         FormField.OPTIONAL );
 

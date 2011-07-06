@@ -26,6 +26,9 @@ public class BM0402ForcedRebuildBundlesTaskIT
         assertTrue( recipe.exists(), "Recipe " + recipe.getPath() + "created" );
         final long lastModified = recipe.lastModified();
 
+        // make a pause so we do not regenerate recipe in same second
+        Thread.sleep( 1000 );
+
         runTask( true );
 
         recipe = storageRecipeFor( "commons-logging", "commons-logging", "1.1.1" );

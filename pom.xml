@@ -120,13 +120,6 @@
       <version>${nexus.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.sonatype.restsimple</groupId>
-      <artifactId>restsimple-client</artifactId>
-      <version>0.4</version>
-      <scope>test</scope>
-    </dependency>
-
 
   </dependencies>
 

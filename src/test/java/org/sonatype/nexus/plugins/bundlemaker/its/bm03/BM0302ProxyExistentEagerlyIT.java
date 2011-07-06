@@ -1,11 +1,8 @@
 package org.sonatype.nexus.plugins.bundlemaker.its.bm03;
 
-import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
-
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.EagerFormField;
 import org.sonatype.nexus.plugins.bundlemaker.its.BundleMakerProxyIT;
 import org.testng.annotations.Test;
-
 
 public class BM0302ProxyExistentEagerlyIT
     extends BundleMakerProxyIT

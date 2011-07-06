@@ -1,6 +1,5 @@
 package org.sonatype.nexus.plugins.bundlemaker.its.bm01;
 
-import static org.sonatype.nexus.plugins.bundlemaker.its.CapabilitiesServiceClient.property;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 

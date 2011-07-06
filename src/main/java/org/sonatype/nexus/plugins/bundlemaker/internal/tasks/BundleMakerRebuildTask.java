@@ -35,7 +35,7 @@ public class BundleMakerRebuildTask
 
     protected boolean getForceRegeneration()
     {
-        return Boolean.valueOf( getParameter( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_OR_GROUP_FIELD_ID ) );
+        return Boolean.valueOf( getParameter( BundleMakerRebuildTaskDescriptor.FORCED_REGENERATION_FIELD_ID ) );
     }
 
     @Override
