@@ -178,9 +178,9 @@
         </dependencies>
       </plugin>
       <plugin>
-        <groupId>org.sonatype.plugins</groupId>
+        <groupId>org.sonatype.nexus.plugins</groupId>
         <artifactId>nexus-test-environment-maven-plugin</artifactId>
-        <version>1.6</version>
+        <version>${nexus.version}</version>
         <executions>
           <execution>
             <goals>
