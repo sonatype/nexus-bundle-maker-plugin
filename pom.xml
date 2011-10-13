@@ -46,7 +46,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <nexus.version>1.9.2</nexus.version>
+    <nexus.version>1.10.0-SNAPSHOT</nexus.version>
     <sisu.assembler.tags>nexus,nexus-plugins</sisu.assembler.tags>
   </properties>
 
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.sonatype.nexus.plugins</groupId>
       <artifactId>nexus-maven-bridge-plugin</artifactId>
-      <version>1.9.3-SNAPSHOT</version>
+      <version>${nexus.version}</version>
       <type>nexus-plugin</type>
       <scope>provided</scope>
     </dependency>
@@ -210,11 +210,10 @@
             <plugin>
               <groupId>org.sonatype.nexus.plugins</groupId>
               <artifactId>nexus-maven-bridge-plugin</artifactId>
-              <version>1.9.3-SNAPSHOT</version>
+              <version>${nexus.version}</version>
               <classifier>bundle</classifier>
               <type>zip</type>
             </plugin>
-
             <plugin>
               <groupId>org.sonatype.nexus</groupId>
               <artifactId>nexus-it-helper-plugin</artifactId>
