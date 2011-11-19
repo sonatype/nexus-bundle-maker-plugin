@@ -262,6 +262,9 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <argLine>-XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError</argLine>
+            </configuration>
           </plugin>
         </plugins>
       </build>
