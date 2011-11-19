@@ -49,7 +49,7 @@ public class BundleMakerCapability
     @Override
     public void load( final Map<String, String> properties )
     {
-        configuration = new BundleMakerConfiguration( properties );
+        create( properties );
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BundleMakerCapability
         if ( !configuration.equals( newConfiguration ) )
         {
             passivate();
-            configuration = new BundleMakerConfiguration( properties );
+            create( properties );
             activate();
         }
     }
@@ -77,3 +77,4 @@ public class BundleMakerCapability
     }
 
 }
+
