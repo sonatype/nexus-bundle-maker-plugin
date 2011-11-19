@@ -22,10 +22,10 @@ import java.util.Map;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
-import org.sonatype.nexus.plugins.capabilities.api.CompositeCapability;
+import org.sonatype.nexus.plugins.capabilities.api.AbstractCapability;
 
 public class BundleMakerCapability
-    extends CompositeCapability
+    extends AbstractCapability
 {
 
     public static final String ID = "bundleMakerCapability";
@@ -44,18 +44,12 @@ public class BundleMakerCapability
     public void create( final Map<String, String> properties )
     {
         configuration = new BundleMakerConfiguration( properties );
-        bundleMaker.addConfiguration( configuration );
-
-        super.create( properties );
     }
 
     @Override
     public void load( final Map<String, String> properties )
     {
         configuration = new BundleMakerConfiguration( properties );
-        bundleMaker.addConfiguration( configuration );
-
-        super.load( properties );
     }
 
     @Override
@@ -64,19 +58,22 @@ public class BundleMakerCapability
         final BundleMakerConfiguration newConfiguration = new BundleMakerConfiguration( properties );
         if ( !configuration.equals( newConfiguration ) )
         {
-            remove();
-            create( properties );
+            passivate();
+            configuration = new BundleMakerConfiguration( properties );
+            activate();
         }
-
-        super.update( properties );
     }
 
     @Override
-    public void remove()
+    public void activate()
+    {
+        bundleMaker.addConfiguration( configuration );
+    }
+
+    @Override
+    public void passivate()
     {
         bundleMaker.removeConfiguration( configuration );
-
-        super.remove();
     }
 
 }
