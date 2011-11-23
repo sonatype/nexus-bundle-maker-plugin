@@ -202,7 +202,7 @@ class NexusUtils
 
         relativePath += toSegments[j];
 
-        return relativePath;
+        return relativePath.replace( File.separator, "/" );
     }
 
     private static String[] getReversePathSegments( final File file )
