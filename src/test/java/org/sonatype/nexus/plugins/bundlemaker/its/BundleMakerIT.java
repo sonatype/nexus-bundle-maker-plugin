@@ -201,7 +201,7 @@ public class BundleMakerIT
     {
         final CapabilityResource cr = new CapabilityResource();
 
-        cr.setName( name );
+        cr.setDescription( name );
         cr.setTypeId( type );
 
         for ( final CapabilityPropertyResource cpr : properties )
