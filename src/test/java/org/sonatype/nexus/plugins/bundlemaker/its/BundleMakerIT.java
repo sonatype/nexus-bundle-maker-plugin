@@ -56,7 +56,7 @@ public class BundleMakerIT
         cprs[0] = property( REPO_OR_GROUP_ID, getTestRepositoryId() );
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
-            capability( BundleMakerIT.class.getName(), BundleMakerCapability.ID, cprs );
+            capability( BundleMakerCapability.ID, BundleMakerIT.class.getName(), cprs );
         CapabilitiesMessageUtil.create( capability );
     }
 
@@ -67,7 +67,7 @@ public class BundleMakerIT
 
         final ScheduledServicePropertyResource repo =
             TaskScheduleUtil.newProperty( BundleMakerRebuildTaskDescriptor.REPO_OR_GROUP_FIELD_ID,
-                getTestRepositoryId() );
+                                          getTestRepositoryId() );
 
         properties.add( repo );
 
@@ -80,8 +80,8 @@ public class BundleMakerIT
         }
 
         TaskScheduleUtil.runTask( BundleMakerRebuildTaskDescriptor.ID + System.currentTimeMillis(),
-            BundleMakerRebuildTaskDescriptor.ID,
-            properties.toArray( new ScheduledServicePropertyResource[properties.size()] ) );
+                                  BundleMakerRebuildTaskDescriptor.ID,
+                                  properties.toArray( new ScheduledServicePropertyResource[properties.size()] ) );
     }
 
     protected void deployFakeCentralArtifacts()
@@ -146,7 +146,8 @@ public class BundleMakerIT
         return ManifestAsserter.fromJar( bundle );
     }
 
-    protected ManifestAsserter assertStorageRecipeFor( final String groupId, final String artifact, final String version )
+    protected ManifestAsserter assertStorageRecipeFor( final String groupId, final String artifact,
+                                                       final String version )
         throws IOException
     {
         return assertStorageRecipeFor( groupId, artifact, version, null );
@@ -162,7 +163,8 @@ public class BundleMakerIT
         return ManifestAsserter.fromProperties( recipe );
     }
 
-    protected ManifestAsserter assertStorageBundleFor( final String groupId, final String artifact, final String version )
+    protected ManifestAsserter assertStorageBundleFor( final String groupId, final String artifact,
+                                                       final String version )
         throws IOException
     {
         return assertStorageBundleFor( groupId, artifact, version, null );
@@ -196,13 +198,14 @@ public class BundleMakerIT
         return recipe;
     }
 
-    public static CapabilityResource capability( final String name, final String type,
+    public static CapabilityResource capability( final String type,
+                                                 final String notes,
                                                  final CapabilityPropertyResource... properties )
     {
         final CapabilityResource cr = new CapabilityResource();
 
-        cr.setDescription( name );
         cr.setTypeId( type );
+        cr.setNotes( notes );
 
         for ( final CapabilityPropertyResource cpr : properties )
         {
