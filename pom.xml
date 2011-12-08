@@ -47,6 +47,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <nexus.version>1.10.0-SNAPSHOT</nexus.version>
+    <maven.version>3.0.1</maven.version>
     <nexusPluginType>nexus-plugin</nexusPluginType>
   </properties>
 
@@ -84,6 +85,13 @@
       <artifactId>nexus-maven-bridge-plugin</artifactId>
       <version>${nexus.version}</version>
       <type>${nexusPluginType}</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+      <version>${maven.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -136,6 +144,12 @@
     <dependency>
       <groupId>org.sonatype.nexus</groupId>
       <artifactId>nexus-test-harness-launcher</artifactId>
+      <version>${nexus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.nexus.plugins.capabilities</groupId>
+      <artifactId>nexus-capabilities-plugin-it</artifactId>
       <version>${nexus.version}</version>
       <scope>test</scope>
     </dependency>
