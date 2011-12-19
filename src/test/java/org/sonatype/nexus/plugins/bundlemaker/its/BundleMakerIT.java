@@ -56,7 +56,7 @@ public class BundleMakerIT
         cprs[0] = property( REPO_OR_GROUP_ID, getTestRepositoryId() );
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
-            capability( BundleMakerCapability.ID, BundleMakerIT.class.getName(), cprs );
+            capability( BundleMakerCapability.TYPE_ID, BundleMakerIT.class.getName(), cprs );
         CapabilitiesMessageUtil.create( capability );
     }
 

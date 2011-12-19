@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.maven.index.artifact.Gav;
 import org.sonatype.nexus.proxy.LocalStorageException;
 import org.sonatype.nexus.proxy.ResourceStoreRequest;
 import org.sonatype.nexus.proxy.item.DefaultStorageFileItem;
@@ -34,6 +33,7 @@ import org.sonatype.nexus.proxy.item.PreparedContentLocator;
 import org.sonatype.nexus.proxy.item.RepositoryItemUid;
 import org.sonatype.nexus.proxy.item.StorageItem;
 import org.sonatype.nexus.proxy.maven.MavenRepository;
+import org.sonatype.nexus.proxy.maven.gav.Gav;
 import org.sonatype.nexus.proxy.repository.Repository;
 import org.sonatype.nexus.proxy.storage.local.fs.DefaultFSLocalRepositoryStorage;
 
@@ -124,7 +124,8 @@ class NexusUtils
     }
 
     public static void storeItem( final Repository repository, final ResourceStoreRequest request,
-                                  final InputStream in, final String mimeType, final Map<String, String> userAttributes )
+                                  final InputStream in, final String mimeType,
+                                  final Map<String, String> userAttributes )
         throws Exception
     {
         final DefaultStorageFileItem fItem =
@@ -159,12 +160,13 @@ class NexusUtils
         {
             final File baseDir =
                 ( (DefaultFSLocalRepositoryStorage) repository.getLocalStorage() ).getBaseDir( repository,
-                    new ResourceStoreRequest( RepositoryItemUid.PATH_ROOT ) );
+                                                                                               new ResourceStoreRequest(
+                                                                                                   RepositoryItemUid.PATH_ROOT ) );
             return baseDir;
         }
 
         throw new LocalStorageException( String.format( "Repository [%s] does not have an local storage",
-            repository.getId() ) );
+                                                        repository.getId() ) );
     }
 
     static void deleteItem( final Repository repository, final String path )
@@ -190,12 +192,12 @@ class NexusUtils
             j--;
         }
 
-        for ( ; i >= 0; i-- )
+        for (; i >= 0; i-- )
         {
             relativePath += ".." + File.separator;
         }
 
-        for ( ; j >= 1; j-- )
+        for (; j >= 1; j-- )
         {
             relativePath += toSegments[j] + File.separator;
         }

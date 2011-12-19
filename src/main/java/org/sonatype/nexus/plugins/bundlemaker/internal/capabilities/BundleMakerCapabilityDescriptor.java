@@ -18,30 +18,35 @@
  */
 package org.sonatype.nexus.plugins.bundlemaker.internal.capabilities;
 
+import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability.TYPE_ID;
+import static org.sonatype.nexus.plugins.capabilities.api.CapabilityType.capabilityType;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.sonatype.nexus.formfields.FormField;
 import org.sonatype.nexus.formfields.RepoOrGroupComboFormField;
+import org.sonatype.nexus.plugins.capabilities.api.CapabilityType;
 import org.sonatype.nexus.plugins.capabilities.api.descriptor.AbstractCapabilityDescriptor;
 import org.sonatype.nexus.plugins.capabilities.api.descriptor.CapabilityDescriptor;
 
 @Singleton
-@Named( BundleMakerCapability.ID )
+@Named( TYPE_ID )
 public class BundleMakerCapabilityDescriptor
     extends AbstractCapabilityDescriptor
     implements CapabilityDescriptor
 {
 
-    public static final String ID = BundleMakerCapability.ID;
+    private static final CapabilityType TYPE = capabilityType( TYPE_ID );
 
     public static final String REPO_OR_GROUP_ID = "repoOrGroup";
 
     public BundleMakerCapabilityDescriptor()
     {
         super(
-            ID,
+            TYPE,
             "Bundle Maker capability",
+            "Automatically converts a jar into an OSGi bundle",
             new RepoOrGroupComboFormField( REPO_OR_GROUP_ID, FormField.MANDATORY ),
             new EagerFormField(),
             new UseMavenModelFormField(),

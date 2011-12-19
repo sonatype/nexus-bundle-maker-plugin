@@ -23,7 +23,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-import org.apache.maven.index.artifact.Gav;
+import org.sonatype.nexus.proxy.maven.gav.Gav;
 
 class BundleMakerUtils
 {

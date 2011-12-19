@@ -38,16 +38,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.apache.maven.index.artifact.Gav;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelBuildingException;
 import org.codehaus.plexus.util.StringUtils;
-import org.slf4j.Logger;
 import org.sonatype.nexus.logging.AbstractLoggingComponent;
 import org.sonatype.nexus.mime.MimeUtil;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
@@ -62,6 +59,7 @@ import org.sonatype.nexus.proxy.item.RepositoryItemUidLock;
 import org.sonatype.nexus.proxy.item.StorageFileItem;
 import org.sonatype.nexus.proxy.item.StorageItem;
 import org.sonatype.nexus.proxy.maven.MavenRepository;
+import org.sonatype.nexus.proxy.maven.gav.Gav;
 import org.sonatype.nexus.proxy.registry.RepositoryRegistry;
 import org.sonatype.nexus.proxy.repository.Repository;
 
@@ -145,7 +143,7 @@ public class RecipeInterceptor
             {
                 getLogger().warn(
                     String.format( "OSGi recipe [%s] not created as jar [%s] was not available due to [%s]",
-                    path, jarPath, e.getMessage() ), e
+                                   path, jarPath, e.getMessage() ), e
                 );
                 return;
             }
@@ -262,7 +260,8 @@ public class RecipeInterceptor
         final File jarFile = safeRetrieveFile( repository, jar.getPath() );
 
         recipeProperties.setProperty( "Bundle-SymbolicName",
-            Maven2OSGiUtils.getBundleSymbolicName( jarGav.getGroupId(), jarGav.getArtifactId(), jarFile ) );
+                                      Maven2OSGiUtils.getBundleSymbolicName( jarGav.getGroupId(),
+                                                                             jarGav.getArtifactId(), jarFile ) );
         recipeProperties.setProperty( "Bundle-Version", Maven2OSGiUtils.getVersion( jarGav.getVersion() ) );
         recipeProperties.setProperty( "Import-Package", "*" );
         recipeProperties.setProperty( "Export-Package", "*" );

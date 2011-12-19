@@ -23,18 +23,19 @@ import java.util.Map;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
 import org.sonatype.nexus.plugins.capabilities.api.AbstractCapability;
+import org.sonatype.nexus.plugins.capabilities.api.CapabilityIdentity;
 
 public class BundleMakerCapability
     extends AbstractCapability
 {
 
-    public static final String ID = "bundleMakerCapability";
+    public static final String TYPE_ID = "bundlemaker";
 
     private final BundleMaker bundleMaker;
 
     private BundleMakerConfiguration configuration;
 
-    public BundleMakerCapability( final String id, final BundleMaker bundleMaker )
+    public BundleMakerCapability( final CapabilityIdentity id, final BundleMaker bundleMaker )
     {
         super( id );
         this.bundleMaker = bundleMaker;
