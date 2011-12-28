@@ -38,7 +38,7 @@ import org.sonatype.nexus.integrationtests.TestContext;
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityPropertyResource;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityResource;
-import org.sonatype.nexus.test.utils.CapabilitiesRestClient;
+import org.sonatype.nexus.test.utils.CapabilitiesNexusRestClient;
 import org.sonatype.nexus.test.utils.DeployUtils;
 import org.sonatype.nexus.test.utils.EventInspectorsUtil;
 import org.sonatype.nexus.test.utils.GavUtil;
@@ -67,7 +67,7 @@ public class BundleMakerITSupport
 
     private final String testRepositoryId;
 
-    private CapabilitiesRestClient capabilitiesNRC;
+    private CapabilitiesNexusRestClient capabilitiesNRC;
 
     private TasksNexusRestClient tasksNRC;
 
@@ -114,7 +114,7 @@ public class BundleMakerITSupport
                 .setNexusUrl( nexus().getUrl().toExternalForm() )
                 .setSecureTest( true )
         );
-        capabilitiesNRC = new CapabilitiesRestClient( nexusRestClient );
+        capabilitiesNRC = new CapabilitiesNexusRestClient( nexusRestClient );
         tasksNRC = new TasksNexusRestClient( nexusRestClient );
         final EventInspectorsUtil events = new EventInspectorsUtil( nexusRestClient );
         repositoriesNRC = new RepositoriesNexusRestClient( nexusRestClient, tasksNRC, events );
@@ -129,7 +129,7 @@ public class BundleMakerITSupport
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
             capability( BundleMakerCapability.TYPE_ID, BundleMakerITSupport.class.getName(), cprs );
-        getCapabilities().create( capability );
+        getCapabilitiesNRC().create( capability );
     }
 
     protected ManifestAssert assertRecipeFor( final String groupId, final String artifact, final String version )
@@ -275,7 +275,7 @@ public class BundleMakerITSupport
         return cpr;
     }
 
-    public CapabilitiesRestClient getCapabilities()
+    public CapabilitiesNexusRestClient getCapabilitiesNRC()
     {
         return capabilitiesNRC;
     }
