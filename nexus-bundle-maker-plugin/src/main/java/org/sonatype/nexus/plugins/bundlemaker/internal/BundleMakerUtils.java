@@ -50,7 +50,7 @@ class BundleMakerUtils
     {
         final Gav gav =
             new Gav( itemGav.getGroupId(), itemGav.getArtifactId(), itemGav.getVersion(), null, "pom",
-                itemGav.getSnapshotBuildNumber(), itemGav.getSnapshotTimeStamp(), null, false, null, false, null );
+                     itemGav.getSnapshotBuildNumber(), itemGav.getSnapshotTimeStamp(), null, false, null, false, null );
         return gav;
     }
 
@@ -140,7 +140,7 @@ class BundleMakerUtils
         {
             return false;
         }
-        return path.startsWith( DOT );
+        return path.startsWith( DOT ) || path.startsWith( "/" + DOT ) || path.startsWith( File.separator + DOT );
     }
 
 }
