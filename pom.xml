@@ -46,15 +46,15 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <nexusPluginType>nexus-plugin</nexusPluginType>
-
-    <nexus.version>1.10.0-SNAPSHOT</nexus.version>
-    <maven.version>3.0.1</maven.version>
+    <nexus.version>2.0-SNAPSHOT</nexus.version>
     <nexus-request-interceptor-plugin.version>1.0-SNAPSHOT</nexus-request-interceptor-plugin.version>
+    <nexus-capabilities-plugin.version>2.0-SNAPSHOT</nexus-capabilities-plugin.version>
+    <nexus.plugin.type>nexus-plugin</nexus.plugin.type>
   </properties>
 
   <modules>
     <module>nexus-bundle-maker-plugin</module>
+    <module>nexus-bundle-maker-plugin-it</module>
   </modules>
 
   <build>
@@ -75,6 +75,24 @@
       </testResource>
     </testResources>
 
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>2.10</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -92,36 +110,46 @@
       <dependency>
         <groupId>org.sonatype.nexus.plugins</groupId>
         <artifactId>nexus-bundle-maker-plugin</artifactId>
-        <version>${project.version}</version>
-        <type>${nexusPluginType}</type>
+        <version>1.0-SNAPSHOT</version>
+        <type>${nexus.plugin.type}</type>
       </dependency>
       <dependency>
         <groupId>org.sonatype.nexus.plugins</groupId>
         <artifactId>nexus-capabilities-plugin</artifactId>
-        <version>${nexus.version}</version>
-        <type>${nexusPluginType}</type>
+        <version>2.0-SNAPSHOT</version>
+        <type>${nexus.plugin.type}</type>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
   <profiles>
     <profile>
-      <id>with-tests</id>
-      <activation>
-        <property>
-          <name>!quick</name>
-        </property>
-      </activation>
-      <modules>
-        <module>nexus-bundle-maker-plugin-it</module>
-      </modules>
+      <id>quick</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <!-- HACK: Workaround for issue with IDEA loading nexus-plugin artifacts -->
     <profile>
       <id>idea</id>
       <properties>
-        <nexusPluginType>jar</nexusPluginType>
+        <nexus.plugin.type>jar</nexus.plugin.type>
       </properties>
     </profile>
   </profiles>

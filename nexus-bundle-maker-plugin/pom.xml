@@ -63,26 +63,26 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
-      <version>${maven.version}</version>
+      <version>3.0.1</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.sonatype.nexus</groupId>
       <artifactId>nexus-api</artifactId>
-      <version>${nexus.version}</version>
+      <version>2.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.nexus</groupId>
       <artifactId>nexus-app</artifactId>
-      <version>${nexus.version}</version>
+      <version>2.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.nexus</groupId>
       <artifactId>nexus-rest-api</artifactId>
-      <version>${nexus.version}</version>
+      <version>2.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
 
@@ -90,20 +90,20 @@
       <groupId>org.sonatype.nexus.plugins</groupId>
       <artifactId>nexus-request-interceptor-plugin</artifactId>
       <version>1.0-SNAPSHOT</version>
-      <type>${nexusPluginType}</type>
+      <type>${nexus.plugin.type}</type>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.nexus.plugins</groupId>
       <artifactId>nexus-maven-bridge-plugin</artifactId>
-      <version>${nexus.version}</version>
-      <type>${nexusPluginType}</type>
+      <version>2.0-SNAPSHOT</version>
+      <type>${nexus.plugin.type}</type>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.nexus.plugins</groupId>
       <artifactId>nexus-capabilities-plugin</artifactId>
-      <type>${nexusPluginType}</type>
+      <type>${nexus.plugin.type}</type>
       <scope>provided</scope>
     </dependency>
 
@@ -114,13 +114,13 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>app-lifecycle-maven-plugin</artifactId>
-        <version>1.4</version>
+        <version>1.5</version>
         <extensions>true</extensions>
         <dependencies>
           <dependency>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>app-lifecycle-nexus</artifactId>
-            <version>1.4</version>
+            <version>1.5</version>
           </dependency>
         </dependencies>
       </plugin>
