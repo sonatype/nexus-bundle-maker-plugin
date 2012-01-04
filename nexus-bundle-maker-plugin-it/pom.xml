@@ -65,6 +65,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.sonatype.nexus</groupId>
+      <artifactId>nexus-test-utils</artifactId>
+      <version>2.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.sonatype.nexus.plugins.capabilities</groupId>
       <artifactId>nexus-capabilities-plugin-it</artifactId>
       <version>2.0-SNAPSHOT</version>

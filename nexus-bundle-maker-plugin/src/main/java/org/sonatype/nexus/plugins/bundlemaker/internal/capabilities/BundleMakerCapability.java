@@ -22,11 +22,11 @@ import java.util.Map;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
-import org.sonatype.nexus.plugins.capabilities.support.AbstractCapability;
 import org.sonatype.nexus.plugins.capabilities.CapabilityIdentity;
+import org.sonatype.nexus.plugins.capabilities.support.CapabilitySupport;
 
 public class BundleMakerCapability
-    extends AbstractCapability
+    extends CapabilitySupport
 {
 
     public static final String TYPE_ID = "bundlemaker";
