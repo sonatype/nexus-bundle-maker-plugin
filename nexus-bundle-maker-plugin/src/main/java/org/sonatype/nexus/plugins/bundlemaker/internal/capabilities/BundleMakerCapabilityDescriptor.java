@@ -19,16 +19,16 @@
 package org.sonatype.nexus.plugins.bundlemaker.internal.capabilities;
 
 import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability.TYPE_ID;
-import static org.sonatype.nexus.plugins.capabilities.api.CapabilityType.capabilityType;
+import static org.sonatype.nexus.plugins.capabilities.CapabilityType.capabilityType;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.sonatype.nexus.formfields.FormField;
 import org.sonatype.nexus.formfields.RepoOrGroupComboFormField;
-import org.sonatype.nexus.plugins.capabilities.api.CapabilityType;
-import org.sonatype.nexus.plugins.capabilities.api.descriptor.AbstractCapabilityDescriptor;
-import org.sonatype.nexus.plugins.capabilities.api.descriptor.CapabilityDescriptor;
+import org.sonatype.nexus.plugins.capabilities.CapabilityType;
+import org.sonatype.nexus.plugins.capabilities.support.AbstractCapabilityDescriptor;
+import org.sonatype.nexus.plugins.capabilities.CapabilityDescriptor;
 
 @Singleton
 @Named( TYPE_ID )

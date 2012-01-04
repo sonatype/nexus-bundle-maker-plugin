@@ -38,7 +38,7 @@ import org.sonatype.nexus.integrationtests.TestContext;
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityPropertyResource;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityResource;
-import org.sonatype.nexus.test.utils.CapabilitiesNexusRestClient;
+import org.sonatype.nexus.plugins.capabilities.test.CapabilitiesNexusRestClient;
 import org.sonatype.nexus.test.utils.DeployUtils;
 import org.sonatype.nexus.test.utils.EventInspectorsUtil;
 import org.sonatype.nexus.test.utils.GavUtil;

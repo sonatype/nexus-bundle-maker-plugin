@@ -25,10 +25,10 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
-import org.sonatype.nexus.plugins.capabilities.api.Capability;
-import org.sonatype.nexus.plugins.capabilities.api.CapabilityFactory;
-import org.sonatype.nexus.plugins.capabilities.api.CapabilityIdentity;
-import org.sonatype.nexus.plugins.capabilities.api.CompositeCapability;
+import org.sonatype.nexus.plugins.capabilities.Capability;
+import org.sonatype.nexus.plugins.capabilities.CapabilityFactory;
+import org.sonatype.nexus.plugins.capabilities.CapabilityIdentity;
+import org.sonatype.nexus.plugins.capabilities.support.CompositeCapability;
 import org.sonatype.nexus.plugins.requestinterceptor.RequestInterceptors;
 
 @Named( TYPE_ID )

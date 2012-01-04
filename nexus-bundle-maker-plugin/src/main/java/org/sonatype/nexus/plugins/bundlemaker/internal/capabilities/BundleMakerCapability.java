@@ -22,8 +22,8 @@ import java.util.Map;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
-import org.sonatype.nexus.plugins.capabilities.api.AbstractCapability;
-import org.sonatype.nexus.plugins.capabilities.api.CapabilityIdentity;
+import org.sonatype.nexus.plugins.capabilities.support.AbstractCapability;
+import org.sonatype.nexus.plugins.capabilities.CapabilityIdentity;
 
 public class BundleMakerCapability
     extends AbstractCapability
