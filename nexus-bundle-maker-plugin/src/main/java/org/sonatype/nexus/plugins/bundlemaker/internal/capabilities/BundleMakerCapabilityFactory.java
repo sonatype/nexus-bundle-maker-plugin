@@ -26,6 +26,7 @@ import javax.inject.Singleton;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.capabilities.Capability;
+import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
 import org.sonatype.nexus.plugins.capabilities.CapabilityFactory;
 import org.sonatype.nexus.plugins.capabilities.CapabilityIdentity;
 import org.sonatype.nexus.plugins.capabilities.support.CompositeCapability;
@@ -49,7 +50,7 @@ public class BundleMakerCapabilityFactory
     }
 
     @Override
-    public Capability create( final CapabilityIdentity id )
+    public Capability create( final CapabilityIdentity id, final CapabilityContext context )
     {
         final CompositeCapability capability = new CompositeCapability( id );
         capability.add( new BundleMakerCapability( id, bundleMaker ) );
