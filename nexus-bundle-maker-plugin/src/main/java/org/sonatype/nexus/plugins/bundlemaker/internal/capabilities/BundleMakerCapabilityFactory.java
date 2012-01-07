@@ -28,7 +28,6 @@ import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.capabilities.Capability;
 import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
 import org.sonatype.nexus.plugins.capabilities.CapabilityFactory;
-import org.sonatype.nexus.plugins.capabilities.CapabilityIdentity;
 import org.sonatype.nexus.plugins.capabilities.support.CompositeCapability;
 import org.sonatype.nexus.plugins.requestinterceptor.RequestInterceptors;
 
@@ -43,19 +42,20 @@ public class BundleMakerCapabilityFactory
     private final RequestInterceptors requestInterceptors;
 
     @Inject
-    BundleMakerCapabilityFactory( final BundleMaker bundleMaker, final RequestInterceptors requestInterceptors )
+    BundleMakerCapabilityFactory( final BundleMaker bundleMaker,
+                                  final RequestInterceptors requestInterceptors )
     {
         this.bundleMaker = bundleMaker;
         this.requestInterceptors = requestInterceptors;
     }
 
     @Override
-    public Capability create( final CapabilityIdentity id, final CapabilityContext context )
+    public Capability create( final CapabilityContext context )
     {
-        final CompositeCapability capability = new CompositeCapability( id );
-        capability.add( new BundleMakerCapability( id, bundleMaker ) );
-        capability.add( new RecipeRequestInterceptorCapability( id, requestInterceptors ) );
-        capability.add( new BundleRequestInterceptorCapability( id, requestInterceptors ) );
+        final CompositeCapability capability = new CompositeCapability( context );
+        capability.add( new BundleMakerCapability( context, bundleMaker ) );
+        capability.add( new RecipeRequestInterceptorCapability( context, requestInterceptors ) );
+        capability.add( new BundleRequestInterceptorCapability( context, requestInterceptors ) );
         return capability;
     }
 }

@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
+import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
 import org.sonatype.nexus.plugins.capabilities.CapabilityIdentity;
 import org.sonatype.nexus.plugins.capabilities.support.CapabilitySupport;
 
@@ -35,9 +36,10 @@ public class BundleMakerCapability
 
     private BundleMakerConfiguration configuration;
 
-    public BundleMakerCapability( final CapabilityIdentity id, final BundleMaker bundleMaker )
+    public BundleMakerCapability( final CapabilityContext context,
+                                  final BundleMaker bundleMaker )
     {
-        super( id );
+        super( context );
         this.bundleMaker = bundleMaker;
     }
 
