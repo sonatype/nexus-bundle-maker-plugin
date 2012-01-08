@@ -18,6 +18,7 @@
  */
 package org.sonatype.nexus.plugins.bundlemaker.internal.capabilities;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability.TYPE_ID;
 
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ import org.sonatype.nexus.plugins.capabilities.Capability;
 import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
 import org.sonatype.nexus.plugins.capabilities.CapabilityFactory;
 import org.sonatype.nexus.plugins.capabilities.support.CompositeCapability;
+import org.sonatype.nexus.plugins.capabilities.support.condition.Conditions;
 import org.sonatype.nexus.plugins.requestinterceptor.RequestInterceptors;
 
 @Named( TYPE_ID )
@@ -41,19 +43,23 @@ public class BundleMakerCapabilityFactory
 
     private final RequestInterceptors requestInterceptors;
 
+    private final Conditions conditions;
+
     @Inject
     BundleMakerCapabilityFactory( final BundleMaker bundleMaker,
-                                  final RequestInterceptors requestInterceptors )
+                                  final RequestInterceptors requestInterceptors,
+                                  final Conditions conditions )
     {
-        this.bundleMaker = bundleMaker;
-        this.requestInterceptors = requestInterceptors;
+        this.bundleMaker = checkNotNull( bundleMaker );
+        this.requestInterceptors = checkNotNull( requestInterceptors );
+        this.conditions = checkNotNull( conditions );
     }
 
     @Override
     public Capability create( final CapabilityContext context )
     {
         final CompositeCapability capability = new CompositeCapability( context );
-        capability.add( new BundleMakerCapability( context, bundleMaker ) );
+        capability.add( new BundleMakerCapability( context, bundleMaker, conditions ) );
         capability.add( new RecipeRequestInterceptorCapability( context, requestInterceptors ) );
         capability.add( new BundleRequestInterceptorCapability( context, requestInterceptors ) );
         return capability;

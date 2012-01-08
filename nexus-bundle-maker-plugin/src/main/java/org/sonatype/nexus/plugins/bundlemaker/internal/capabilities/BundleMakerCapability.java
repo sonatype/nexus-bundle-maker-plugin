@@ -18,13 +18,14 @@
  */
 package org.sonatype.nexus.plugins.bundlemaker.internal.capabilities;
 
-import java.util.Map;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
 import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
-import org.sonatype.nexus.plugins.capabilities.CapabilityIdentity;
+import org.sonatype.nexus.plugins.capabilities.Condition;
 import org.sonatype.nexus.plugins.capabilities.support.CapabilitySupport;
+import org.sonatype.nexus.plugins.capabilities.support.condition.Conditions;
 
 public class BundleMakerCapability
     extends CapabilitySupport
@@ -34,49 +35,36 @@ public class BundleMakerCapability
 
     private final BundleMaker bundleMaker;
 
+    private final Conditions conditions;
+
     private BundleMakerConfiguration configuration;
 
     public BundleMakerCapability( final CapabilityContext context,
-                                  final BundleMaker bundleMaker )
+                                  final BundleMaker bundleMaker,
+                                  final Conditions conditions )
     {
         super( context );
-        this.bundleMaker = bundleMaker;
+        this.bundleMaker = checkNotNull( bundleMaker );
+        this.conditions = checkNotNull( conditions );
     }
 
     @Override
-    public void create( final Map<String, String> properties )
+    public void onActivate()
     {
-        configuration = new BundleMakerConfiguration( properties );
-    }
-
-    @Override
-    public void load( final Map<String, String> properties )
-    {
-        create( properties );
-    }
-
-    @Override
-    public void update( final Map<String, String> properties )
-    {
-        final BundleMakerConfiguration newConfiguration = new BundleMakerConfiguration( properties );
-        if ( !configuration.equals( newConfiguration ) )
-        {
-            passivate();
-            create( properties );
-            activate();
-        }
-    }
-
-    @Override
-    public void activate()
-    {
+        configuration = new BundleMakerConfiguration( context().properties() );
         bundleMaker.addConfiguration( configuration );
     }
 
     @Override
-    public void passivate()
+    public void onPassivate()
     {
         bundleMaker.removeConfiguration( configuration );
+    }
+
+    @Override
+    public Condition activationCondition()
+    {
+        return conditions.capabilities().passivateCapabilityDuringUpdate( context().id() );
     }
 
 }
