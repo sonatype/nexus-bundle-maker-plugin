@@ -22,7 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
-import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
 import org.sonatype.nexus.plugins.capabilities.Condition;
 import org.sonatype.nexus.plugins.capabilities.support.CapabilitySupport;
 import org.sonatype.nexus.plugins.capabilities.support.condition.Conditions;
@@ -39,11 +38,9 @@ public class BundleMakerCapability
 
     private BundleMakerConfiguration configuration;
 
-    public BundleMakerCapability( final CapabilityContext context,
-                                  final BundleMaker bundleMaker,
+    public BundleMakerCapability( final BundleMaker bundleMaker,
                                   final Conditions conditions )
     {
-        super( context );
         this.bundleMaker = checkNotNull( bundleMaker );
         this.conditions = checkNotNull( conditions );
     }

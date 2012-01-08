@@ -56,12 +56,12 @@ public class BundleMakerCapabilityFactory
     }
 
     @Override
-    public Capability create( final CapabilityContext context )
+    public Capability create()
     {
-        final CompositeCapability capability = new CompositeCapability( context );
-        capability.add( new BundleMakerCapability( context, bundleMaker, conditions ) );
-        capability.add( new RecipeRequestInterceptorCapability( context, requestInterceptors ) );
-        capability.add( new BundleRequestInterceptorCapability( context, requestInterceptors ) );
+        final CompositeCapability capability = new CompositeCapability( );
+        capability.add( new BundleMakerCapability( bundleMaker, conditions ) );
+        capability.add( new RecipeRequestInterceptorCapability( requestInterceptors, conditions ) );
+        capability.add( new BundleRequestInterceptorCapability( requestInterceptors, conditions ) );
         return capability;
     }
 }

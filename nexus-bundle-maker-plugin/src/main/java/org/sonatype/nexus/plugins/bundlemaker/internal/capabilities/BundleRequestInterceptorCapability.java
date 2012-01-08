@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.sonatype.nexus.plugins.bundlemaker.internal.BundleInterceptor;
-import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
+import org.sonatype.nexus.plugins.capabilities.support.condition.Conditions;
 import org.sonatype.nexus.plugins.requestinterceptor.RequestInterceptorConfiguration;
 import org.sonatype.nexus.plugins.requestinterceptor.RequestInterceptors;
 import org.sonatype.nexus.plugins.requestinterceptor.capabilities.RequestInterceptorActionFormField;
@@ -35,10 +35,10 @@ public class BundleRequestInterceptorCapability
     extends RequestInterceptorCapability
 {
 
-    public BundleRequestInterceptorCapability( final CapabilityContext context,
-                                               final RequestInterceptors requestInterceptors )
+    public BundleRequestInterceptorCapability( final RequestInterceptors requestInterceptors,
+                                               final Conditions conditions )
     {
-        super( context, requestInterceptors );
+        super( requestInterceptors, conditions );
     }
 
     @Override
