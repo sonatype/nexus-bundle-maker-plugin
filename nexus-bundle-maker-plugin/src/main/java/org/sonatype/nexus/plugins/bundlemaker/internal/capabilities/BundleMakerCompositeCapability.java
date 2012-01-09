@@ -18,8 +18,7 @@
  */
 package org.sonatype.nexus.plugins.bundlemaker.internal.capabilities;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability.TYPE_ID;
+import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.TYPE_ID;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,41 +26,25 @@ import javax.inject.Singleton;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.capabilities.Capability;
-import org.sonatype.nexus.plugins.capabilities.CapabilityContext;
-import org.sonatype.nexus.plugins.capabilities.CapabilityFactory;
 import org.sonatype.nexus.plugins.capabilities.support.CompositeCapability;
 import org.sonatype.nexus.plugins.capabilities.support.condition.Conditions;
 import org.sonatype.nexus.plugins.requestinterceptor.RequestInterceptors;
 
 @Named( TYPE_ID )
 @Singleton
-public class BundleMakerCapabilityFactory
-    implements CapabilityFactory
+public class BundleMakerCompositeCapability
+    extends CompositeCapability
+    implements Capability
 {
 
-    private final BundleMaker bundleMaker;
-
-    private final RequestInterceptors requestInterceptors;
-
-    private final Conditions conditions;
-
     @Inject
-    BundleMakerCapabilityFactory( final BundleMaker bundleMaker,
-                                  final RequestInterceptors requestInterceptors,
-                                  final Conditions conditions )
+    BundleMakerCompositeCapability( final BundleMaker bundleMaker,
+                                    final RequestInterceptors requestInterceptors,
+                                    final Conditions conditions )
     {
-        this.bundleMaker = checkNotNull( bundleMaker );
-        this.requestInterceptors = checkNotNull( requestInterceptors );
-        this.conditions = checkNotNull( conditions );
+        add( new BundleMakerCapability( bundleMaker, conditions ) );
+        add( new RecipeRequestInterceptorCapability( requestInterceptors, conditions ) );
+        add( new BundleRequestInterceptorCapability( requestInterceptors, conditions ) );
     }
 
-    @Override
-    public Capability create()
-    {
-        final CompositeCapability capability = new CompositeCapability( );
-        capability.add( new BundleMakerCapability( bundleMaker, conditions ) );
-        capability.add( new RecipeRequestInterceptorCapability( requestInterceptors, conditions ) );
-        capability.add( new BundleRequestInterceptorCapability( requestInterceptors, conditions ) );
-        return capability;
-    }
 }

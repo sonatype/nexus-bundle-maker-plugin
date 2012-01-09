@@ -18,7 +18,7 @@
  */
 package org.sonatype.nexus.plugins.bundlemaker.internal.capabilities;
 
-import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability.TYPE_ID;
+import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.TYPE_ID;
 import static org.sonatype.nexus.plugins.capabilities.CapabilityType.capabilityType;
 
 import javax.inject.Named;
@@ -36,6 +36,8 @@ public class BundleMakerCapabilityDescriptor
     extends CapabilityDescriptorSupport
     implements CapabilityDescriptor
 {
+
+    public static final String TYPE_ID = "bundlemaker";
 
     private static final CapabilityType TYPE = capabilityType( TYPE_ID );
 

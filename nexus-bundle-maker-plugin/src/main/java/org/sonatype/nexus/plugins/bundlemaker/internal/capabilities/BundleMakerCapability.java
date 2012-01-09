@@ -30,8 +30,6 @@ public class BundleMakerCapability
     extends CapabilitySupport
 {
 
-    public static final String TYPE_ID = "bundlemaker";
-
     private final BundleMaker bundleMaker;
 
     private final Conditions conditions;

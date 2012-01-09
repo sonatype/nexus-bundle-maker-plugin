@@ -35,7 +35,7 @@ import org.sonatype.nexus.bundle.launcher.NexusBundleConfiguration;
 import org.sonatype.nexus.bundle.launcher.NexusRunningITSupport;
 import org.sonatype.nexus.integrationtests.NexusRestClient;
 import org.sonatype.nexus.integrationtests.TestContext;
-import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapability;
+import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityPropertyResource;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityResource;
 import org.sonatype.nexus.plugins.capabilities.test.CapabilitiesNexusRestClient;
@@ -128,7 +128,7 @@ public class BundleMakerITSupport
         cprs[0] = property( REPO_OR_GROUP_ID, getTestRepositoryId() );
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
-            capability( BundleMakerCapability.TYPE_ID, BundleMakerITSupport.class.getName(), cprs );
+            capability( BundleMakerCapabilityDescriptor.TYPE_ID, BundleMakerITSupport.class.getName(), cprs );
         getCapabilitiesNRC().create( capability );
     }
 
