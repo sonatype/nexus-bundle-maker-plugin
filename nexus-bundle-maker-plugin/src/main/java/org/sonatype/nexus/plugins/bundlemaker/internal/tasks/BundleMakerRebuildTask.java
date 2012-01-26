@@ -42,7 +42,7 @@ public class BundleMakerRebuildTask
     @Override
     protected String getRepositoryFieldId()
     {
-        return BundleMakerRebuildTaskDescriptor.REPO_OR_GROUP_FIELD_ID;
+        return BundleMakerRebuildTaskDescriptor.REPOSITORY_FIELD_ID;
     }
 
     @Override

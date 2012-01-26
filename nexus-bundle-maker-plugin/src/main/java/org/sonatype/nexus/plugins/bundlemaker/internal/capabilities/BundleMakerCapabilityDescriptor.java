@@ -41,7 +41,7 @@ public class BundleMakerCapabilityDescriptor
 
     private static final CapabilityType TYPE = capabilityType( TYPE_ID );
 
-    public static final String REPO_OR_GROUP_ID = "repoOrGroup";
+    public static final String REPOSITORY = "repositoryId";
 
     public BundleMakerCapabilityDescriptor()
     {
@@ -49,7 +49,7 @@ public class BundleMakerCapabilityDescriptor
             TYPE,
             "Bundle Maker capability",
             "Automatically converts a jar into an OSGi bundle",
-            new RepoOrGroupComboFormField( REPO_OR_GROUP_ID, FormField.MANDATORY ),
+            new RepoOrGroupComboFormField( REPOSITORY, FormField.MANDATORY ),
             new EagerFormField(),
             new UseMavenModelFormField(),
             new RemoteRepositoriesFormField()
