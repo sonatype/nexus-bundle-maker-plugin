@@ -82,7 +82,7 @@ public class BundleMakerTaskIT
         final List<ScheduledServicePropertyResource> properties = new ArrayList<ScheduledServicePropertyResource>();
 
         final ScheduledServicePropertyResource repo = TasksNexusRestClient.newProperty(
-            BundleMakerRebuildTaskDescriptor.REPO_OR_GROUP_FIELD_ID, getTestRepositoryId()
+            BundleMakerRebuildTaskDescriptor.REPOSITORY_FIELD_ID, getTestRepositoryId()
         );
 
         properties.add( repo );

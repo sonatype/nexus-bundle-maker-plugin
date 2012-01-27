@@ -40,7 +40,7 @@ public class BundleMakerConfiguration
 
     public BundleMakerConfiguration( final Map<String, String> properties )
     {
-        repositoryId = repository( properties );
+        repositoryId = properties.get( BundleMakerCapabilityDescriptor.REPOSITORY );
         mavenRemoteRepositoriesIds = mavenRemoteRepositoriesIds( properties );
         eager = eager( properties );
         useMavenModel = useMavenModel( properties );
@@ -150,14 +150,6 @@ public class BundleMakerConfiguration
         builder.append( eager );
         builder.append( "]" );
         return builder.toString();
-    }
-
-    private static String repository( final Map<String, String> properties )
-    {
-        String repositoryId = properties.get( BundleMakerCapabilityDescriptor.REPO_OR_GROUP_ID );
-        repositoryId = repositoryId.replaceFirst( "repo_", "" );
-        repositoryId = repositoryId.replaceFirst( "group_", "" );
-        return repositoryId;
     }
 
     private static String[] mavenRemoteRepositoriesIds( final Map<String, String> properties )

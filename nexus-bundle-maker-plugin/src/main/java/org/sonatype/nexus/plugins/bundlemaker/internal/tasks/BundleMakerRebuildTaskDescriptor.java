@@ -38,13 +38,13 @@ public class BundleMakerRebuildTaskDescriptor
 
     public static final String ID = "BundleMakerRebuildTask";
 
-    public static final String REPO_OR_GROUP_FIELD_ID = "repositoryId";
+    public static final String REPOSITORY_FIELD_ID = "repositoryId";
 
     public static final String RESOURCE_STORE_PATH_FIELD_ID = "resourceStorePath";
 
     public static final String FORCED_REGENERATION_FIELD_ID = "forceRegeneration";
 
-    private final RepoOrGroupComboFormField repoField = new RepoOrGroupComboFormField( REPO_OR_GROUP_FIELD_ID,
+    private final RepoOrGroupComboFormField repoField = new RepoOrGroupComboFormField( REPOSITORY_FIELD_ID,
         FormField.MANDATORY );
 
     private final StringTextFormField resourceStorePathField = new StringTextFormField( RESOURCE_STORE_PATH_FIELD_ID,

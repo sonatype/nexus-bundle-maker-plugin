@@ -20,7 +20,7 @@ package org.sonatype.nexus.plugins.bundlemaker.its;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.REPO_OR_GROUP_ID;
+import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.REPOSITORY;
 
 import java.io.File;
 import java.io.IOException;
@@ -125,7 +125,7 @@ public class BundleMakerITSupport
         throws Exception
     {
         final CapabilityPropertyResource[] cprs = new CapabilityPropertyResource[properties.length + 1];
-        cprs[0] = property( REPO_OR_GROUP_ID, getTestRepositoryId() );
+        cprs[0] = property( REPOSITORY, getTestRepositoryId() );
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
             capability( BundleMakerCapabilityDescriptor.TYPE_ID, BundleMakerITSupport.class.getName(), cprs );
