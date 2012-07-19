@@ -20,11 +20,14 @@ package org.sonatype.nexus.plugins.bundlemaker.internal.capabilities;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Map;
+
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.bundlemaker.BundleMakerConfiguration;
 import org.sonatype.nexus.plugins.capabilities.Condition;
 import org.sonatype.nexus.plugins.capabilities.support.CapabilitySupport;
 import org.sonatype.nexus.plugins.capabilities.support.condition.Conditions;
+import org.sonatype.nexus.plugins.capabilities.support.condition.RepositoryConditions;
 
 public class BundleMakerCapability
     extends CapabilitySupport
@@ -44,9 +47,37 @@ public class BundleMakerCapability
     }
 
     @Override
+    public void onCreate()
+        throws Exception
+    {
+        configuration = createConfiguration( context().properties() );
+    }
+
+    @Override
+    public void onLoad()
+        throws Exception
+    {
+        onCreate();
+    }
+
+    @Override
+    public void onUpdate()
+        throws Exception
+    {
+        onRemove();
+        onCreate();
+    }
+
+    @Override
+    public void onRemove()
+        throws Exception
+    {
+        configuration = null;
+    }
+
+    @Override
     public void onActivate()
     {
-        configuration = new BundleMakerConfiguration( context().properties() );
         bundleMaker.addConfiguration( configuration );
     }
 
@@ -59,7 +90,54 @@ public class BundleMakerCapability
     @Override
     public Condition activationCondition()
     {
-        return conditions.capabilities().passivateCapabilityDuringUpdate( context().id() );
+        return conditions.logical().and(
+            conditions.repository().repositoryIsInService( new RepositoryConditions.RepositoryId()
+            {
+                @Override
+                public String get()
+                {
+                    return isConfigured() ? configuration.repositoryId() : null;
+                }
+            } ),
+            conditions.capabilities().passivateCapabilityDuringUpdate( context().id() )
+        );
+    }
+
+    @Override
+    public Condition validityCondition()
+    {
+        return conditions.repository().repositoryExists( new RepositoryConditions.RepositoryId()
+        {
+            @Override
+            public String get()
+            {
+                return isConfigured() ? configuration.repositoryId() : null;
+            }
+        } );
+    }
+
+    private boolean isConfigured()
+    {
+        return configuration != null;
+    }
+
+    private BundleMakerConfiguration createConfiguration( final Map<String, String> properties )
+    {
+        return new BundleMakerConfiguration( properties );
+    }
+
+    @Override
+    public String toString()
+    {
+        String id = null;
+        if ( context() != null )
+        {
+            id = "'" + context().id() + "'";
+        }
+        return getClass().getSimpleName() + "{" +
+            "id=" + id +
+            ", config=" + configuration +
+            '}';
     }
 
 }
