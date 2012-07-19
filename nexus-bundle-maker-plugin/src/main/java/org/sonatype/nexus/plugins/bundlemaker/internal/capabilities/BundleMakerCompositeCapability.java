@@ -26,6 +26,7 @@ import javax.inject.Singleton;
 
 import org.sonatype.nexus.plugins.bundlemaker.BundleMaker;
 import org.sonatype.nexus.plugins.capabilities.Capability;
+import org.sonatype.nexus.plugins.capabilities.Condition;
 import org.sonatype.nexus.plugins.capabilities.support.CompositeCapability;
 import org.sonatype.nexus.plugins.capabilities.support.condition.Conditions;
 import org.sonatype.nexus.plugins.requestinterceptor.RequestInterceptors;
@@ -37,14 +38,43 @@ public class BundleMakerCompositeCapability
     implements Capability
 {
 
+    private final BundleMakerCapability bmc;
+
+    private final RecipeRequestInterceptorCapability rric;
+
+    private final BundleRequestInterceptorCapability bric;
+
+    private final Conditions conditions;
+
     @Inject
     BundleMakerCompositeCapability( final BundleMaker bundleMaker,
                                     final RequestInterceptors requestInterceptors,
                                     final Conditions conditions )
     {
-        add( new BundleMakerCapability( bundleMaker, conditions ) );
-        add( new RecipeRequestInterceptorCapability( requestInterceptors, conditions ) );
-        add( new BundleRequestInterceptorCapability( requestInterceptors, conditions ) );
+        this.conditions = conditions;
+        add( bmc = new BundleMakerCapability( bundleMaker, conditions ) );
+        add( rric = new RecipeRequestInterceptorCapability( requestInterceptors, conditions ) );
+        add( bric = new BundleRequestInterceptorCapability( requestInterceptors, conditions ) );
+    }
+
+    @Override
+    public Condition activationCondition()
+    {
+        return conditions.logical().and(
+            bmc.activationCondition(),
+            rric.activationCondition(),
+            bric.activationCondition()
+        );
+    }
+
+    @Override
+    public Condition validityCondition()
+    {
+        return conditions.logical().and(
+            bmc.validityCondition(),
+            rric.validityCondition(),
+            bric.validityCondition()
+        );
     }
 
 }
