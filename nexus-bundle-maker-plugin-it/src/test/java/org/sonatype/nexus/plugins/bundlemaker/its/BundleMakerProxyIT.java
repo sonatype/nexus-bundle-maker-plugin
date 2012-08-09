@@ -36,17 +36,14 @@ public class BundleMakerProxyIT
 
     static final String NO_CLASSIFIER = null;
 
-    public BundleMakerProxyIT()
+    public BundleMakerProxyIT(final String nexusBundleCoordinates)
     {
-        super( "bundle-maker" );
+        super( "bundle-maker", nexusBundleCoordinates );
     }
 
     @Before
-    @Override
-    public void setUp()
+    public void createProxyRepositoryOnStart()
     {
-        super.setUp();
-
         try
         {
             repositoriesNRC().createMavenHostedReleaseRepository( getTestProxiedRepositoryId() );
@@ -79,17 +76,17 @@ public class BundleMakerProxyIT
 
         deployNRC().deployUsingPomWithRest(
             getTestProxiedRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -105,17 +102,17 @@ public class BundleMakerProxyIT
 
         deployNRC().deployUsingPomWithRest(
             getTestProxiedRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -132,8 +129,8 @@ public class BundleMakerProxyIT
 
         deployNRC().deployUsingPomWithRest(
             getTestProxiedRepositoryId(),
-            resolveTestFile( "artifacts/ops4j-base-lang.jar" ),
-            resolveTestFile( "artifacts/ops4j-base-lang.pom" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.jar" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -175,8 +172,8 @@ public class BundleMakerProxyIT
 
         deployNRC().deployUsingPomWithRest(
             getTestProxiedRepositoryId(),
-            resolveTestFile( "artifacts/ops4j-base-lang.jar" ),
-            resolveTestFile( "artifacts/ops4j-base-lang.pom" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.jar" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -216,8 +213,8 @@ public class BundleMakerProxyIT
     {
         deployNRC().deployUsingPomWithRest(
             getTestProxiedRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -229,7 +226,7 @@ public class BundleMakerProxyIT
             "1.1.1",
             NO_CLASSIFIER,
             "osgi",
-            resolveTestFile( "artifacts/commons-logging.osgi" )
+            testData().resolveFile( "artifacts/commons-logging.osgi" )
         );
 
         deployNRC().deployWithRest(
@@ -239,16 +236,16 @@ public class BundleMakerProxyIT
             "1.1.1",
             "osgi",
             "jar",
-            resolveTestFile( "artifacts/commons-logging-osgi.jar" )
+            testData().resolveFile( "artifacts/commons-logging-osgi.jar" )
         );
 
         createCapability();
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -262,8 +259,8 @@ public class BundleMakerProxyIT
     {
         deployNRC().deployUsingPomWithRest(
             getTestProxiedRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -275,7 +272,7 @@ public class BundleMakerProxyIT
             "1.1.1",
             NO_CLASSIFIER,
             "osgi",
-            resolveTestFile( "artifacts/commons-logging.osgi" )
+            testData().resolveFile( "artifacts/commons-logging.osgi" )
         );
 
         deployNRC().deployWithRest(
@@ -285,16 +282,16 @@ public class BundleMakerProxyIT
             "1.1.1",
             "osgi",
             "jar",
-            resolveTestFile( "artifacts/commons-logging-osgi.jar" )
+            testData().resolveFile( "artifacts/commons-logging-osgi.jar" )
         );
 
         createCapability( property( EagerFormField.ID, "true" ) );
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
 }

@@ -38,37 +38,18 @@
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-inject-bean</artifactId>
       <version>2.3.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.nexus.plugins</groupId>
-      <artifactId>nexus-bundle-maker-plugin</artifactId>
-      <type>${nexus.plugin.type}</type>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.nexus.plugins</groupId>
-      <artifactId>nexus-capabilities-plugin</artifactId>
-      <type>${nexus.plugin.type}</type>
-    </dependency>
-
-    <dependency>
-      <groupId>org.sonatype.nexus</groupId>
-      <artifactId>nexus-launcher</artifactId>
-      <version>2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.nexus</groupId>
-      <artifactId>nexus-launcher</artifactId>
-      <version>2.0</version>
-      <classifier>tests</classifier>
+      <artifactId>nexus-testsuite-support</artifactId>
+      <version>2.2-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
-    <!-- Force version of sisu-bundle launcher to avoid conflict with nexus-maven-bridge version via transitive dependencies -->
     <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-bundle-launcher</artifactId>
-      <version>1.1</version>
+      <groupId>org.sonatype.nexus.capabilities</groupId>
+      <artifactId>nexus-capabilities-client</artifactId>
+      <version>2.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -78,18 +59,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.sonatype.nexus.plugins.capabilities</groupId>
-      <artifactId>nexus-capabilities-plugin-it</artifactId>
-      <version>2.0</version>
+      <groupId>org.sonatype.nexus.plugins</groupId>
+      <artifactId>nexus-capabilities-plugin</artifactId>
+      <type>${nexus.plugin.type}</type>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.sonatype.sisu.litmus</groupId>
-      <artifactId>litmus-testsupport</artifactId>
-      <version>1.0</version>
+      <groupId>org.sonatype.nexus.plugins</groupId>
+      <artifactId>nexus-bundle-maker-plugin</artifactId>
+      <type>${nexus.plugin.type}</type>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -97,6 +77,27 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
+      <!-- The following can go away if capabilities/core nexus client get a Sisu index -->
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+            <id>index</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>index</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-index</id>
+            <goals>
+              <goal>test-index</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

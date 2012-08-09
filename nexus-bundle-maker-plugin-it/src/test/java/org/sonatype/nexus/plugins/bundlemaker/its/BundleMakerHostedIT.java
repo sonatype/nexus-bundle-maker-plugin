@@ -38,17 +38,14 @@ public class BundleMakerHostedIT
 
     static final String NO_CLASSIFIER = null;
 
-    public BundleMakerHostedIT()
+    public BundleMakerHostedIT( final String nexusBundleCoordinates )
     {
-        super( "bundle-maker" );
+        super( "bundle-maker", nexusBundleCoordinates );
     }
 
     @Before
-    @Override
-    public void setUp()
+    public void createHostedRepositoryOnStart()
     {
-        super.setUp();
-
         try
         {
             repositoriesNRC().createMavenHostedReleaseRepository( getTestRepositoryId() );
@@ -72,17 +69,17 @@ public class BundleMakerHostedIT
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -104,27 +101,27 @@ public class BundleMakerHostedIT
 
         deployNRC().deployPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/apache.pom" )
+            testData().resolveFile( "artifacts/apache.pom" )
         );
 
         deployNRC().deployPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/commons-parent.pom" )
+            testData().resolveFile( "artifacts/commons-parent.pom" )
         );
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -140,17 +137,17 @@ public class BundleMakerHostedIT
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -166,8 +163,8 @@ public class BundleMakerHostedIT
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -185,10 +182,10 @@ public class BundleMakerHostedIT
         assertThat( "Bundle " + bundle.getPath() + " created", bundle.exists(), is( false ) );
 
         assertRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -205,8 +202,8 @@ public class BundleMakerHostedIT
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/ops4j-base-lang.jar" ),
-            resolveTestFile( "artifacts/ops4j-base-lang.pom" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.jar" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -249,8 +246,8 @@ public class BundleMakerHostedIT
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/ops4j-base-lang.jar" ),
-            resolveTestFile( "artifacts/ops4j-base-lang.pom" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.jar" ),
+            testData().resolveFile( "artifacts/ops4j-base-lang.pom" ),
             NO_CLASSIFIER,
             "jar"
         );

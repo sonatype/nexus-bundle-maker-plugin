@@ -21,53 +21,64 @@ package org.sonatype.nexus.plugins.bundlemaker.its;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor.REPOSITORY;
+import static org.sonatype.nexus.testsuite.support.ParametersLoaders.firstAvailableTestParameters;
+import static org.sonatype.nexus.testsuite.support.ParametersLoaders.systemTestParameters;
+import static org.sonatype.nexus.testsuite.support.ParametersLoaders.testParameters;
+import static org.sonatype.sisu.goodies.common.Varargs.$;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.codehaus.plexus.util.StringUtils;
+import org.jetbrains.annotations.Nullable;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.runners.Parameterized;
 import org.sonatype.inject.BeanScanning;
 import org.sonatype.nexus.bundle.launcher.NexusBundleConfiguration;
-import org.sonatype.nexus.bundle.launcher.NexusRunningITSupport;
+import org.sonatype.nexus.capabilities.client.Capabilities;
+import org.sonatype.nexus.client.core.NexusClient;
+import org.sonatype.nexus.client.rest.BaseUrl;
+import org.sonatype.nexus.client.rest.NexusClientFactory;
+import org.sonatype.nexus.client.rest.UsernamePasswordAuthenticationInfo;
 import org.sonatype.nexus.integrationtests.NexusRestClient;
 import org.sonatype.nexus.integrationtests.TestContext;
 import org.sonatype.nexus.plugins.bundlemaker.internal.capabilities.BundleMakerCapabilityDescriptor;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityPropertyResource;
 import org.sonatype.nexus.plugins.capabilities.internal.rest.dto.CapabilityResource;
-import org.sonatype.nexus.plugins.capabilities.test.CapabilitiesNexusRestClient;
 import org.sonatype.nexus.test.utils.DeployUtils;
 import org.sonatype.nexus.test.utils.EventInspectorsUtil;
 import org.sonatype.nexus.test.utils.GavUtil;
 import org.sonatype.nexus.test.utils.RepositoriesNexusRestClient;
 import org.sonatype.nexus.test.utils.TasksNexusRestClient;
+import org.sonatype.nexus.testsuite.support.NexusRunningParametrizedITSupport;
 
 public class BundleMakerITSupport
-    extends NexusRunningITSupport
+    extends NexusRunningParametrizedITSupport
 {
 
-    @Inject
-    @Named( "${NexusITSupport.nexus-bundle-maker-plugin-coordinates}" )
-    private String bundleMakerPluginCoordinates;
+    @Parameterized.Parameters
+    public static Collection<Object[]> data()
+    {
+        return firstAvailableTestParameters(
+            systemTestParameters(),
+            testParameters(
+                $( "org.sonatype.nexus:nexus-oss-webapp:zip:bundle" )
+            )
+        ).load();
+    }
 
     @Inject
-    @Named( "${NexusITSupport.nexus-capabilities-plugin-coordinates}" )
-    private String capabilitiesPluginCoordinates;
+    private NexusClientFactory nexusClientFactory;
 
-    @Inject
-    @Named( "${NexusITSupport.nexus-request-interceptor-plugin-coordinates}" )
-    private String requestInterceptorPluginCoordinates;
+    protected NexusClient nexusClient;
 
-    @Inject
-    @Named( "${NexusITSupport.nexus-maven-bridge-plugin-coordinates}" )
-    private String mavenBridgePluginCoordinates;
+    private NexusRestClient legacyNexusClient;
 
     private final String testRepositoryId;
-
-    private CapabilitiesNexusRestClient capabilitiesNRC;
 
     private TasksNexusRestClient tasksNRC;
 
@@ -75,11 +86,61 @@ public class BundleMakerITSupport
 
     private DeployUtils deployNRC;
 
-    private NexusRestClient nexusRestClient;
-
-    protected BundleMakerITSupport( final String testRepositoryId )
+    protected BundleMakerITSupport( final String testRepositoryId,
+                                    final String nexusBundleCoordinates )
     {
+        super( nexusBundleCoordinates );
         this.testRepositoryId = testRepositoryId;
+    }
+
+    @Before
+    public void setUpClients()
+    {
+        nexusClient = nexusClientFactory.createFor(
+            BaseUrl.baseUrlFrom( nexus().getUrl() ),
+            new UsernamePasswordAuthenticationInfo( "admin", "admin123" )
+        );
+
+        legacyNexusClient = new NexusRestClient(
+            new TestContext()
+                .setNexusUrl( nexus().getUrl().toExternalForm() )
+                .setSecureTest( true )
+        );
+
+        tasksNRC = new TasksNexusRestClient( legacyNexusClient );
+        repositoriesNRC = new RepositoriesNexusRestClient(
+            legacyNexusClient, tasksNRC, new EventInspectorsUtil( legacyNexusClient )
+        );
+        deployNRC = new DeployUtils( legacyNexusClient );
+    }
+
+    @After
+    public void tearDownClients()
+    {
+        if ( nexusClient != null )
+        {
+            nexusClient.close();
+        }
+    }
+
+    public Capabilities capabilities()
+    {
+        return nexusClient.getSubsystem( Capabilities.class );
+    }
+
+    public DeployUtils deployNRC()
+    {
+        return deployNRC;
+    }
+
+    public RepositoriesNexusRestClient repositoriesNRC()
+    {
+        return repositoriesNRC;
+    }
+
+    protected TasksNexusRestClient tasksNRC()
+    {
+        return tasksNRC;
     }
 
     protected String getTestRepositoryId()
@@ -88,37 +149,28 @@ public class BundleMakerITSupport
     }
 
     @Override
-    public BeanScanning scanning()
-    {
-        return BeanScanning.INDEX;
-    }
-
-    @Override
     protected NexusBundleConfiguration configureNexus( final NexusBundleConfiguration configuration )
     {
         return configuration.addPlugins(
-            resolveArtifact( requestInterceptorPluginCoordinates ),
-            resolveArtifact( mavenBridgePluginCoordinates ),
-            resolveArtifact( capabilitiesPluginCoordinates ),
-            resolveArtifact( bundleMakerPluginCoordinates )
+            artifactResolver().resolvePluginFromDependencyManagement(
+                "org.sonatype.nexus.plugins", "nexus-bundle-maker-plugin"
+            ),
+            artifactResolver().resolvePluginFromDependencyManagement(
+                "org.sonatype.nexus.plugins", "nexus-capabilities-plugin"
+            ),
+            artifactResolver().resolvePluginFromDependencyManagement(
+                "org.sonatype.nexus.plugins", "nexus-request-interceptor-plugin"
+            ),
+            artifactResolver().resolvePluginFromDependencyManagement(
+                "org.sonatype.nexus.plugins", "nexus-maven-bridge-plugin"
+            )
         );
     }
 
-    @Before
     @Override
-    public void setUp()
+    public BeanScanning scanning()
     {
-        super.setUp();
-        nexusRestClient = new NexusRestClient(
-            new TestContext()
-                .setNexusUrl( nexus().getUrl().toExternalForm() )
-                .setSecureTest( true )
-        );
-        capabilitiesNRC = new CapabilitiesNexusRestClient( nexusRestClient );
-        tasksNRC = new TasksNexusRestClient( nexusRestClient );
-        final EventInspectorsUtil events = new EventInspectorsUtil( nexusRestClient );
-        repositoriesNRC = new RepositoriesNexusRestClient( nexusRestClient, tasksNRC, events );
-        deployNRC = new DeployUtils( nexusRestClient );
+        return BeanScanning.INDEX;
     }
 
     protected void createCapability( final CapabilityPropertyResource... properties )
@@ -129,7 +181,7 @@ public class BundleMakerITSupport
         System.arraycopy( properties, 0, cprs, 1, properties.length );
         final CapabilityResource capability =
             capability( BundleMakerCapabilityDescriptor.TYPE_ID, BundleMakerITSupport.class.getName(), cprs );
-        getCapabilitiesNRC().create( capability );
+        capabilities().add( capability );
     }
 
     protected ManifestAssert assertRecipeFor( final String groupId, final String artifact, final String version )
@@ -139,7 +191,7 @@ public class BundleMakerITSupport
     }
 
     protected ManifestAssert assertRecipeFor( final String groupId, final String artifactId, final String version,
-                                              final String classifier )
+                                              @Nullable final String classifier )
         throws IOException
     {
         final File recipe = downloadArtifact( groupId, artifactId, version, "osgi", classifier );
@@ -153,7 +205,7 @@ public class BundleMakerITSupport
     }
 
     protected ManifestAssert assertBundleFor( final String groupId, final String artifactId, final String version,
-                                              final String classifier )
+                                              @Nullable final String classifier )
         throws IOException
     {
         String bundleClassifier = "osgi";
@@ -179,7 +231,7 @@ public class BundleMakerITSupport
     }
 
     protected ManifestAssert assertStorageRecipeFor( final String groupId, final String artifactId,
-                                                     final String version, final String classifier )
+                                                     final String version, @Nullable final String classifier )
         throws IOException
     {
         final File recipe = storageRecipeFor( groupId, artifactId, version, classifier );
@@ -196,7 +248,7 @@ public class BundleMakerITSupport
     }
 
     protected ManifestAssert assertStorageBundleFor( final String groupId, final String artifactId,
-                                                     final String version, final String classifier )
+                                                     final String version, @Nullable final String classifier )
         throws IOException
     {
         final File bundle = new File(
@@ -219,7 +271,7 @@ public class BundleMakerITSupport
     }
 
     protected File storageRecipeFor( final String groupId, final String artifactId, final String version,
-                                     final String classifier )
+                                     @Nullable final String classifier )
     {
         return new File(
             nexus().getWorkDirectory(),
@@ -242,9 +294,9 @@ public class BundleMakerITSupport
 
         String classifierPart = ( classifier != null ) ? "-" + classifier : "";
 
-        return nexusRestClient.downloadFile(
+        return legacyNexusClient.downloadFile(
             url,
-            methodSpecificDirectory( "downloads" ) + "/" + artifact + "-" + version + classifierPart + "." + type
+            testIndex.getDirectory( "downloads" ) + "/" + artifact + "-" + version + classifierPart + "." + type
         );
     }
 
@@ -273,26 +325,6 @@ public class BundleMakerITSupport
         cpr.setValue( value );
 
         return cpr;
-    }
-
-    public CapabilitiesNexusRestClient getCapabilitiesNRC()
-    {
-        return capabilitiesNRC;
-    }
-
-    public DeployUtils deployNRC()
-    {
-        return deployNRC;
-    }
-
-    public RepositoriesNexusRestClient repositoriesNRC()
-    {
-        return repositoriesNRC;
-    }
-
-    protected TasksNexusRestClient tasksNRC()
-    {
-        return tasksNRC;
     }
 
 }

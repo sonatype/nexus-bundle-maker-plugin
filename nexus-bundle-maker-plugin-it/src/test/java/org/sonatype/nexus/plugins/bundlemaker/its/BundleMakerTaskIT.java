@@ -22,11 +22,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +31,6 @@ import org.sonatype.nexus.bundle.launcher.NexusBundleConfiguration;
 import org.sonatype.nexus.plugins.bundlemaker.internal.tasks.BundleMakerRebuildTaskDescriptor;
 import org.sonatype.nexus.rest.model.ScheduledServicePropertyResource;
 import org.sonatype.nexus.test.utils.TasksNexusRestClient;
-import com.google.common.base.Throwables;
 
 public class BundleMakerTaskIT
     extends BundleMakerITSupport
@@ -42,38 +38,27 @@ public class BundleMakerTaskIT
 
     private static final String NO_CLASSIFIER = null;
 
-    @Inject
-    @Named( "${NexusITSupport.nexus-it-helper-plugin-coordinates}" )
-    private String itHelperPluginCoordinates;
-
-    public BundleMakerTaskIT()
+    public BundleMakerTaskIT( final String nexusBundleCoordinates )
     {
-        super( "bundle-maker" );
+        super( "bundle-maker", nexusBundleCoordinates );
     }
 
     @Override
     protected NexusBundleConfiguration configureNexus( final NexusBundleConfiguration configuration )
     {
-        super.configureNexus( configuration );
-        return configuration.addPlugins(
-            resolveArtifact( itHelperPluginCoordinates )
-        );
+        return super.configureNexus( configuration )
+            .addPlugins(
+                artifactResolver().resolvePluginFromDependencyManagement(
+                    "org.sonatype.nexus", "nexus-it-helper-plugin"
+                )
+            );
     }
 
     @Before
-    @Override
-    public void setUp()
+    public void createHostedRepositoryOnStart()
+        throws Exception
     {
-        super.setUp();
-
-        try
-        {
-            repositoriesNRC().createMavenHostedReleaseRepository( getTestRepositoryId() );
-        }
-        catch ( IOException e )
-        {
-            throw Throwables.propagate( e );
-        }
+        repositoriesNRC().createMavenHostedReleaseRepository( getTestRepositoryId() );
     }
 
     protected void runBundleMakerTask( final boolean forceRegeneration )
@@ -117,8 +102,8 @@ public class BundleMakerTaskIT
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -126,10 +111,10 @@ public class BundleMakerTaskIT
         runBundleMakerTask( false );
 
         assertStorageRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertStorageBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
     /**
@@ -147,8 +132,8 @@ public class BundleMakerTaskIT
 
         deployNRC().deployUsingPomWithRest(
             getTestRepositoryId(),
-            resolveTestFile( "artifacts/commons-logging.jar" ),
-            resolveTestFile( "artifacts/commons-logging.pom" ),
+            testData().resolveFile( "artifacts/commons-logging.jar" ),
+            testData().resolveFile( "artifacts/commons-logging.pom" ),
             NO_CLASSIFIER,
             "jar"
         );
@@ -170,10 +155,10 @@ public class BundleMakerTaskIT
         assertThat( "Recipe was recreated", recipe.lastModified() > lastModified, is( true ) );
 
         assertStorageRecipeFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1.osgi.properties" ) );
 
         assertStorageBundleFor( "commons-logging", "commons-logging", "1.1.1" )
-            .matches( resolveTestFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
+            .matches( testData().resolveFile( "manifests/commons-logging-1.1.1-osgi.jar.properties" ) );
     }
 
 }
